@@ -1,0 +1,1185 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="BddModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Acteur">
+          <Key>
+            <PropertyRef Name="IdActeur" />
+          </Key>
+          <Property Name="IdActeur" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NomActeur" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="IdRole" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ActeurArticle">
+          <Key>
+            <PropertyRef Name="Reference" />
+            <PropertyRef Name="IdActeur" />
+          </Key>
+          <Property Name="Reference" Type="int" Nullable="false" />
+          <Property Name="IdActeur" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Article">
+          <Key>
+            <PropertyRef Name="Reference" />
+          </Key>
+          <Property Name="Reference" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LibelleArticle" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Prix" Type="float" Nullable="false" />
+          <Property Name="IdGenre" Type="int" Nullable="false" />
+          <Property Name="PrixFournisseur" Type="float" />
+          <Property Name="IdFournisseur" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Categorie">
+          <Key>
+            <PropertyRef Name="IdCategorie" />
+          </Key>
+          <Property Name="IdCategorie" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LibelleCategorie" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Tva" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="NumeroClient" />
+          </Key>
+          <Property Name="NumeroClient" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NomClient" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="PrenomClient" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="AdresseClient" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="CodePostalClient" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="VilleClient" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="EmailClient" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="MotDePasseClient" Type="varchar" MaxLength="250" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CommandeFournisseur">
+          <Key>
+            <PropertyRef Name="NumeroCommandeFournisseur" />
+          </Key>
+          <Property Name="NumeroCommandeFournisseur" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DateCommandeFournisseur" Type="datetime" Nullable="false" />
+          <Property Name="IdFournisseur" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Fournisseur">
+          <Key>
+            <PropertyRef Name="IdFournisseur" />
+          </Key>
+          <Property Name="IdFournisseur" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NomFournisseur" Type="varchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Genre">
+          <Key>
+            <PropertyRef Name="IdGenre" />
+          </Key>
+          <Property Name="IdGenre" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LibelleGenre" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="IdCategorie" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LigneCommande">
+          <Key>
+            <PropertyRef Name="NumeroCommande" />
+            <PropertyRef Name="Reference" />
+          </Key>
+          <Property Name="QuantiteCommande" Type="int" Nullable="false" />
+          <Property Name="PrixUnitaire" Type="float" Nullable="false" />
+          <Property Name="NumeroCommande" Type="int" Nullable="false" />
+          <Property Name="Reference" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LigneCommandeFournisseur">
+          <Key>
+            <PropertyRef Name="NumeroCommandeFournisseur" />
+            <PropertyRef Name="Reference" />
+          </Key>
+          <Property Name="QuantiteCommandeFournisseur" Type="int" Nullable="false" />
+          <Property Name="PrixUnitaireFournisseur" Type="float" Nullable="false" />
+          <Property Name="NumeroCommandeFournisseur" Type="int" Nullable="false" />
+          <Property Name="Reference" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LigneLivraison">
+          <Key>
+            <PropertyRef Name="NumeroLivraison" />
+            <PropertyRef Name="Reference" />
+          </Key>
+          <Property Name="QuantiteLivraison" Type="int" Nullable="false" />
+          <Property Name="NumeroLivraison" Type="int" Nullable="false" />
+          <Property Name="Reference" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Livraison">
+          <Key>
+            <PropertyRef Name="NumeroLivraison" />
+          </Key>
+          <Property Name="NumeroLivraison" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DateLivraison" Type="datetime" Nullable="false" />
+          <Property Name="AccuseReception" Type="bit" Nullable="false" />
+          <Property Name="LivraisonComplete" Type="bit" Nullable="false" />
+          <Property Name="NumeroCommande" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Paiement">
+          <Key>
+            <PropertyRef Name="IdPaiement" />
+          </Key>
+          <Property Name="IdPaiement" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MontantPaiement" Type="float" Nullable="false" />
+          <Property Name="ModePaiement" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="NumeroCommande" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PanierCommande">
+          <Key>
+            <PropertyRef Name="NumeroCommande" />
+          </Key>
+          <Property Name="NumeroCommande" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DateCommande" Type="datetime" Nullable="false" />
+          <Property Name="EtatCommande" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="IdPaiement" Type="int" Nullable="false" />
+          <Property Name="NumeroClient" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Promotion">
+          <Key>
+            <PropertyRef Name="IdPromotion" />
+          </Key>
+          <Property Name="IdPromotion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Remise" Type="int" Nullable="false" />
+          <Property Name="DateDebut" Type="datetime" Nullable="false" />
+          <Property Name="DateFin" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PromotionArticle">
+          <Key>
+            <PropertyRef Name="Reference" />
+            <PropertyRef Name="IdPromotion" />
+          </Key>
+          <Property Name="Reference" Type="int" Nullable="false" />
+          <Property Name="IdPromotion" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="IdRole" />
+          </Key>
+          <Property Name="IdRole" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LibelleRole" Type="varchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StockArticle">
+          <Key>
+            <PropertyRef Name="Reference" />
+          </Key>
+          <Property Name="Reference" Type="int" Nullable="false" />
+          <Property Name="Quantite" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Acteur_IdRole">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="Acteur" Type="Self.Acteur" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="IdRole" />
+            </Principal>
+            <Dependent Role="Acteur">
+              <PropertyRef Name="IdRole" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ActeurArticle_IdActeur">
+          <End Role="Acteur" Type="Self.Acteur" Multiplicity="1" />
+          <End Role="ActeurArticle" Type="Self.ActeurArticle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Acteur">
+              <PropertyRef Name="IdActeur" />
+            </Principal>
+            <Dependent Role="ActeurArticle">
+              <PropertyRef Name="IdActeur" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ActeurArticle_Reference">
+          <End Role="Article" Type="Self.Article" Multiplicity="1" />
+          <End Role="ActeurArticle" Type="Self.ActeurArticle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Article">
+              <PropertyRef Name="Reference" />
+            </Principal>
+            <Dependent Role="ActeurArticle">
+              <PropertyRef Name="Reference" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Article_IdFournisseur">
+          <End Role="Fournisseur" Type="Self.Fournisseur" Multiplicity="1" />
+          <End Role="Article" Type="Self.Article" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fournisseur">
+              <PropertyRef Name="IdFournisseur" />
+            </Principal>
+            <Dependent Role="Article">
+              <PropertyRef Name="IdFournisseur" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Article_IdGenre">
+          <End Role="Genre" Type="Self.Genre" Multiplicity="1" />
+          <End Role="Article" Type="Self.Article" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Genre">
+              <PropertyRef Name="IdGenre" />
+            </Principal>
+            <Dependent Role="Article">
+              <PropertyRef Name="IdGenre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CommandeFournisseur_IdFournisseur">
+          <End Role="Fournisseur" Type="Self.Fournisseur" Multiplicity="1" />
+          <End Role="CommandeFournisseur" Type="Self.CommandeFournisseur" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fournisseur">
+              <PropertyRef Name="IdFournisseur" />
+            </Principal>
+            <Dependent Role="CommandeFournisseur">
+              <PropertyRef Name="IdFournisseur" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Genre_IdCategorie">
+          <End Role="Categorie" Type="Self.Categorie" Multiplicity="1" />
+          <End Role="Genre" Type="Self.Genre" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categorie">
+              <PropertyRef Name="IdCategorie" />
+            </Principal>
+            <Dependent Role="Genre">
+              <PropertyRef Name="IdCategorie" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LigneCommande_NumeroCommande">
+          <End Role="PanierCommande" Type="Self.PanierCommande" Multiplicity="1" />
+          <End Role="LigneCommande" Type="Self.LigneCommande" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PanierCommande">
+              <PropertyRef Name="NumeroCommande" />
+            </Principal>
+            <Dependent Role="LigneCommande">
+              <PropertyRef Name="NumeroCommande" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LigneCommande_Reference">
+          <End Role="Article" Type="Self.Article" Multiplicity="1" />
+          <End Role="LigneCommande" Type="Self.LigneCommande" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Article">
+              <PropertyRef Name="Reference" />
+            </Principal>
+            <Dependent Role="LigneCommande">
+              <PropertyRef Name="Reference" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LigneCommandeFournisseur_NumeroCommandeFournisseur">
+          <End Role="CommandeFournisseur" Type="Self.CommandeFournisseur" Multiplicity="1" />
+          <End Role="LigneCommandeFournisseur" Type="Self.LigneCommandeFournisseur" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CommandeFournisseur">
+              <PropertyRef Name="NumeroCommandeFournisseur" />
+            </Principal>
+            <Dependent Role="LigneCommandeFournisseur">
+              <PropertyRef Name="NumeroCommandeFournisseur" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LigneCommandeFournisseur_Reference">
+          <End Role="Article" Type="Self.Article" Multiplicity="1" />
+          <End Role="LigneCommandeFournisseur" Type="Self.LigneCommandeFournisseur" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Article">
+              <PropertyRef Name="Reference" />
+            </Principal>
+            <Dependent Role="LigneCommandeFournisseur">
+              <PropertyRef Name="Reference" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LigneLivraison_NumeroLivraison">
+          <End Role="Livraison" Type="Self.Livraison" Multiplicity="1" />
+          <End Role="LigneLivraison" Type="Self.LigneLivraison" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Livraison">
+              <PropertyRef Name="NumeroLivraison" />
+            </Principal>
+            <Dependent Role="LigneLivraison">
+              <PropertyRef Name="NumeroLivraison" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LigneLivraison_Reference">
+          <End Role="Article" Type="Self.Article" Multiplicity="1" />
+          <End Role="LigneLivraison" Type="Self.LigneLivraison" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Article">
+              <PropertyRef Name="Reference" />
+            </Principal>
+            <Dependent Role="LigneLivraison">
+              <PropertyRef Name="Reference" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Livraison_NumeroCommande">
+          <End Role="PanierCommande" Type="Self.PanierCommande" Multiplicity="1" />
+          <End Role="Livraison" Type="Self.Livraison" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PanierCommande">
+              <PropertyRef Name="NumeroCommande" />
+            </Principal>
+            <Dependent Role="Livraison">
+              <PropertyRef Name="NumeroCommande" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Paiement_NumeroCommande">
+          <End Role="PanierCommande" Type="Self.PanierCommande" Multiplicity="1" />
+          <End Role="Paiement" Type="Self.Paiement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PanierCommande">
+              <PropertyRef Name="NumeroCommande" />
+            </Principal>
+            <Dependent Role="Paiement">
+              <PropertyRef Name="NumeroCommande" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PanierCommande_IdPaiement">
+          <End Role="Paiement" Type="Self.Paiement" Multiplicity="1" />
+          <End Role="PanierCommande" Type="Self.PanierCommande" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Paiement">
+              <PropertyRef Name="IdPaiement" />
+            </Principal>
+            <Dependent Role="PanierCommande">
+              <PropertyRef Name="IdPaiement" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PanierCommande_NumeroClient">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="PanierCommande" Type="Self.PanierCommande" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="NumeroClient" />
+            </Principal>
+            <Dependent Role="PanierCommande">
+              <PropertyRef Name="NumeroClient" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PromotionArticle_IdPromotion">
+          <End Role="Promotion" Type="Self.Promotion" Multiplicity="1" />
+          <End Role="PromotionArticle" Type="Self.PromotionArticle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Promotion">
+              <PropertyRef Name="IdPromotion" />
+            </Principal>
+            <Dependent Role="PromotionArticle">
+              <PropertyRef Name="IdPromotion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PromotionArticle_Reference">
+          <End Role="Article" Type="Self.Article" Multiplicity="1" />
+          <End Role="PromotionArticle" Type="Self.PromotionArticle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Article">
+              <PropertyRef Name="Reference" />
+            </Principal>
+            <Dependent Role="PromotionArticle">
+              <PropertyRef Name="Reference" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StockArticle_Reference">
+          <End Role="Article" Type="Self.Article" Multiplicity="1" />
+          <End Role="StockArticle" Type="Self.StockArticle" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Article">
+              <PropertyRef Name="Reference" />
+            </Principal>
+            <Dependent Role="StockArticle">
+              <PropertyRef Name="Reference" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BddModelStoreContainer">
+          <EntitySet Name="Acteur" EntityType="Self.Acteur" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ActeurArticle" EntityType="Self.ActeurArticle" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Article" EntityType="Self.Article" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Categorie" EntityType="Self.Categorie" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Client" EntityType="Self.Client" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CommandeFournisseur" EntityType="Self.CommandeFournisseur" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Fournisseur" EntityType="Self.Fournisseur" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Genre" EntityType="Self.Genre" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LigneCommande" EntityType="Self.LigneCommande" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LigneCommandeFournisseur" EntityType="Self.LigneCommandeFournisseur" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LigneLivraison" EntityType="Self.LigneLivraison" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Livraison" EntityType="Self.Livraison" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Paiement" EntityType="Self.Paiement" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PanierCommande" EntityType="Self.PanierCommande" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Promotion" EntityType="Self.Promotion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PromotionArticle" EntityType="Self.PromotionArticle" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StockArticle" EntityType="Self.StockArticle" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Acteur_IdRole" Association="Self.FK_Acteur_IdRole">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="Acteur" EntitySet="Acteur" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ActeurArticle_IdActeur" Association="Self.FK_ActeurArticle_IdActeur">
+            <End Role="Acteur" EntitySet="Acteur" />
+            <End Role="ActeurArticle" EntitySet="ActeurArticle" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ActeurArticle_Reference" Association="Self.FK_ActeurArticle_Reference">
+            <End Role="Article" EntitySet="Article" />
+            <End Role="ActeurArticle" EntitySet="ActeurArticle" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Article_IdFournisseur" Association="Self.FK_Article_IdFournisseur">
+            <End Role="Fournisseur" EntitySet="Fournisseur" />
+            <End Role="Article" EntitySet="Article" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Article_IdGenre" Association="Self.FK_Article_IdGenre">
+            <End Role="Genre" EntitySet="Genre" />
+            <End Role="Article" EntitySet="Article" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CommandeFournisseur_IdFournisseur" Association="Self.FK_CommandeFournisseur_IdFournisseur">
+            <End Role="Fournisseur" EntitySet="Fournisseur" />
+            <End Role="CommandeFournisseur" EntitySet="CommandeFournisseur" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Genre_IdCategorie" Association="Self.FK_Genre_IdCategorie">
+            <End Role="Categorie" EntitySet="Categorie" />
+            <End Role="Genre" EntitySet="Genre" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LigneCommande_NumeroCommande" Association="Self.FK_LigneCommande_NumeroCommande">
+            <End Role="PanierCommande" EntitySet="PanierCommande" />
+            <End Role="LigneCommande" EntitySet="LigneCommande" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LigneCommande_Reference" Association="Self.FK_LigneCommande_Reference">
+            <End Role="Article" EntitySet="Article" />
+            <End Role="LigneCommande" EntitySet="LigneCommande" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LigneCommandeFournisseur_NumeroCommandeFournisseur" Association="Self.FK_LigneCommandeFournisseur_NumeroCommandeFournisseur">
+            <End Role="CommandeFournisseur" EntitySet="CommandeFournisseur" />
+            <End Role="LigneCommandeFournisseur" EntitySet="LigneCommandeFournisseur" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LigneCommandeFournisseur_Reference" Association="Self.FK_LigneCommandeFournisseur_Reference">
+            <End Role="Article" EntitySet="Article" />
+            <End Role="LigneCommandeFournisseur" EntitySet="LigneCommandeFournisseur" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LigneLivraison_NumeroLivraison" Association="Self.FK_LigneLivraison_NumeroLivraison">
+            <End Role="Livraison" EntitySet="Livraison" />
+            <End Role="LigneLivraison" EntitySet="LigneLivraison" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LigneLivraison_Reference" Association="Self.FK_LigneLivraison_Reference">
+            <End Role="Article" EntitySet="Article" />
+            <End Role="LigneLivraison" EntitySet="LigneLivraison" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Livraison_NumeroCommande" Association="Self.FK_Livraison_NumeroCommande">
+            <End Role="PanierCommande" EntitySet="PanierCommande" />
+            <End Role="Livraison" EntitySet="Livraison" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Paiement_NumeroCommande" Association="Self.FK_Paiement_NumeroCommande">
+            <End Role="PanierCommande" EntitySet="PanierCommande" />
+            <End Role="Paiement" EntitySet="Paiement" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PanierCommande_IdPaiement" Association="Self.FK_PanierCommande_IdPaiement">
+            <End Role="Paiement" EntitySet="Paiement" />
+            <End Role="PanierCommande" EntitySet="PanierCommande" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PanierCommande_NumeroClient" Association="Self.FK_PanierCommande_NumeroClient">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="PanierCommande" EntitySet="PanierCommande" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PromotionArticle_IdPromotion" Association="Self.FK_PromotionArticle_IdPromotion">
+            <End Role="Promotion" EntitySet="Promotion" />
+            <End Role="PromotionArticle" EntitySet="PromotionArticle" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PromotionArticle_Reference" Association="Self.FK_PromotionArticle_Reference">
+            <End Role="Article" EntitySet="Article" />
+            <End Role="PromotionArticle" EntitySet="PromotionArticle" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StockArticle_Reference" Association="Self.FK_StockArticle_Reference">
+            <End Role="Article" EntitySet="Article" />
+            <End Role="StockArticle" EntitySet="StockArticle" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BddModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Acteur">
+          <Key>
+            <PropertyRef Name="IdActeur" />
+          </Key>
+          <Property Name="IdActeur" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NomActeur" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdRole" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Role" Relationship="Self.FK_Acteur_IdRole" FromRole="Acteur" ToRole="Role" />
+          <NavigationProperty Name="Articles" Relationship="Self.ActeurArticle" FromRole="Acteur" ToRole="Article" />
+        </EntityType>
+        <EntityType Name="Article">
+          <Key>
+            <PropertyRef Name="Reference" />
+          </Key>
+          <Property Name="Reference" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LibelleArticle" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Prix" Type="Double" Nullable="false" />
+          <Property Name="IdGenre" Type="Int32" Nullable="false" />
+          <Property Name="PrixFournisseur" Type="Double" />
+          <Property Name="IdFournisseur" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Fournisseur" Relationship="Self.FK_Article_IdFournisseur" FromRole="Article" ToRole="Fournisseur" />
+          <NavigationProperty Name="Genre" Relationship="Self.FK_Article_IdGenre" FromRole="Article" ToRole="Genre" />
+          <NavigationProperty Name="LigneCommandes" Relationship="Self.FK_LigneCommande_Reference" FromRole="Article" ToRole="LigneCommande" />
+          <NavigationProperty Name="LigneCommandeFournisseurs" Relationship="Self.FK_LigneCommandeFournisseur_Reference" FromRole="Article" ToRole="LigneCommandeFournisseur" />
+          <NavigationProperty Name="LigneLivraisons" Relationship="Self.FK_LigneLivraison_Reference" FromRole="Article" ToRole="LigneLivraison" />
+          <NavigationProperty Name="StockArticle" Relationship="Self.FK_StockArticle_Reference" FromRole="Article" ToRole="StockArticle" />
+          <NavigationProperty Name="Acteurs" Relationship="Self.ActeurArticle" FromRole="Article" ToRole="Acteur" />
+          <NavigationProperty Name="Promotions" Relationship="Self.PromotionArticle" FromRole="Article" ToRole="Promotion" />
+        </EntityType>
+        <EntityType Name="Categorie">
+          <Key>
+            <PropertyRef Name="IdCategorie" />
+          </Key>
+          <Property Name="IdCategorie" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LibelleCategorie" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Tva" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Genres" Relationship="Self.FK_Genre_IdCategorie" FromRole="Categorie" ToRole="Genre" />
+        </EntityType>
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="NumeroClient" />
+          </Key>
+          <Property Name="NumeroClient" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NomClient" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PrenomClient" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AdresseClient" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CodePostalClient" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="VilleClient" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EmailClient" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MotDePasseClient" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="PanierCommandes" Relationship="Self.FK_PanierCommande_NumeroClient" FromRole="Client" ToRole="PanierCommande" />
+        </EntityType>
+        <EntityType Name="CommandeFournisseur">
+          <Key>
+            <PropertyRef Name="NumeroCommandeFournisseur" />
+          </Key>
+          <Property Name="NumeroCommandeFournisseur" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DateCommandeFournisseur" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IdFournisseur" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Fournisseur" Relationship="Self.FK_CommandeFournisseur_IdFournisseur" FromRole="CommandeFournisseur" ToRole="Fournisseur" />
+          <NavigationProperty Name="LigneCommandeFournisseurs" Relationship="Self.FK_LigneCommandeFournisseur_NumeroCommandeFournisseur" FromRole="CommandeFournisseur" ToRole="LigneCommandeFournisseur" />
+        </EntityType>
+        <EntityType Name="Fournisseur">
+          <Key>
+            <PropertyRef Name="IdFournisseur" />
+          </Key>
+          <Property Name="IdFournisseur" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NomFournisseur" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Articles" Relationship="Self.FK_Article_IdFournisseur" FromRole="Fournisseur" ToRole="Article" />
+          <NavigationProperty Name="CommandeFournisseurs" Relationship="Self.FK_CommandeFournisseur_IdFournisseur" FromRole="Fournisseur" ToRole="CommandeFournisseur" />
+        </EntityType>
+        <EntityType Name="Genre">
+          <Key>
+            <PropertyRef Name="IdGenre" />
+          </Key>
+          <Property Name="IdGenre" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LibelleGenre" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdCategorie" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Articles" Relationship="Self.FK_Article_IdGenre" FromRole="Genre" ToRole="Article" />
+          <NavigationProperty Name="Categorie" Relationship="Self.FK_Genre_IdCategorie" FromRole="Genre" ToRole="Categorie" />
+        </EntityType>
+        <EntityType Name="LigneCommande">
+          <Key>
+            <PropertyRef Name="NumeroCommande" />
+            <PropertyRef Name="Reference" />
+          </Key>
+          <Property Name="QuantiteCommande" Type="Int32" Nullable="false" />
+          <Property Name="PrixUnitaire" Type="Double" Nullable="false" />
+          <Property Name="NumeroCommande" Type="Int32" Nullable="false" />
+          <Property Name="Reference" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Article" Relationship="Self.FK_LigneCommande_Reference" FromRole="LigneCommande" ToRole="Article" />
+          <NavigationProperty Name="PanierCommande" Relationship="Self.FK_LigneCommande_NumeroCommande" FromRole="LigneCommande" ToRole="PanierCommande" />
+        </EntityType>
+        <EntityType Name="LigneCommandeFournisseur">
+          <Key>
+            <PropertyRef Name="NumeroCommandeFournisseur" />
+            <PropertyRef Name="Reference" />
+          </Key>
+          <Property Name="QuantiteCommandeFournisseur" Type="Int32" Nullable="false" />
+          <Property Name="PrixUnitaireFournisseur" Type="Double" Nullable="false" />
+          <Property Name="NumeroCommandeFournisseur" Type="Int32" Nullable="false" />
+          <Property Name="Reference" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Article" Relationship="Self.FK_LigneCommandeFournisseur_Reference" FromRole="LigneCommandeFournisseur" ToRole="Article" />
+          <NavigationProperty Name="CommandeFournisseur" Relationship="Self.FK_LigneCommandeFournisseur_NumeroCommandeFournisseur" FromRole="LigneCommandeFournisseur" ToRole="CommandeFournisseur" />
+        </EntityType>
+        <EntityType Name="LigneLivraison">
+          <Key>
+            <PropertyRef Name="NumeroLivraison" />
+            <PropertyRef Name="Reference" />
+          </Key>
+          <Property Name="QuantiteLivraison" Type="Int32" Nullable="false" />
+          <Property Name="NumeroLivraison" Type="Int32" Nullable="false" />
+          <Property Name="Reference" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Article" Relationship="Self.FK_LigneLivraison_Reference" FromRole="LigneLivraison" ToRole="Article" />
+          <NavigationProperty Name="Livraison" Relationship="Self.FK_LigneLivraison_NumeroLivraison" FromRole="LigneLivraison" ToRole="Livraison" />
+        </EntityType>
+        <EntityType Name="Livraison">
+          <Key>
+            <PropertyRef Name="NumeroLivraison" />
+          </Key>
+          <Property Name="NumeroLivraison" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DateLivraison" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AccuseReception" Type="Boolean" Nullable="false" />
+          <Property Name="LivraisonComplete" Type="Boolean" Nullable="false" />
+          <Property Name="NumeroCommande" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="LigneLivraisons" Relationship="Self.FK_LigneLivraison_NumeroLivraison" FromRole="Livraison" ToRole="LigneLivraison" />
+          <NavigationProperty Name="PanierCommande" Relationship="Self.FK_Livraison_NumeroCommande" FromRole="Livraison" ToRole="PanierCommande" />
+        </EntityType>
+        <EntityType Name="Paiement">
+          <Key>
+            <PropertyRef Name="IdPaiement" />
+          </Key>
+          <Property Name="IdPaiement" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MontantPaiement" Type="Double" Nullable="false" />
+          <Property Name="ModePaiement" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NumeroCommande" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="PanierCommande" Relationship="Self.FK_Paiement_NumeroCommande" FromRole="Paiement" ToRole="PanierCommande" />
+          <NavigationProperty Name="PanierCommandes" Relationship="Self.FK_PanierCommande_IdPaiement" FromRole="Paiement" ToRole="PanierCommande" />
+        </EntityType>
+        <EntityType Name="PanierCommande">
+          <Key>
+            <PropertyRef Name="NumeroCommande" />
+          </Key>
+          <Property Name="NumeroCommande" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DateCommande" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EtatCommande" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdPaiement" Type="Int32" Nullable="false" />
+          <Property Name="NumeroClient" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Client" Relationship="Self.FK_PanierCommande_NumeroClient" FromRole="PanierCommande" ToRole="Client" />
+          <NavigationProperty Name="LigneCommandes" Relationship="Self.FK_LigneCommande_NumeroCommande" FromRole="PanierCommande" ToRole="LigneCommande" />
+          <NavigationProperty Name="Livraisons" Relationship="Self.FK_Livraison_NumeroCommande" FromRole="PanierCommande" ToRole="Livraison" />
+          <NavigationProperty Name="Paiements" Relationship="Self.FK_Paiement_NumeroCommande" FromRole="PanierCommande" ToRole="Paiement" />
+          <NavigationProperty Name="Paiement" Relationship="Self.FK_PanierCommande_IdPaiement" FromRole="PanierCommande" ToRole="Paiement" />
+        </EntityType>
+        <EntityType Name="Promotion">
+          <Key>
+            <PropertyRef Name="IdPromotion" />
+          </Key>
+          <Property Name="IdPromotion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Remise" Type="Int32" Nullable="false" />
+          <Property Name="DateDebut" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DateFin" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Articles" Relationship="Self.PromotionArticle" FromRole="Promotion" ToRole="Article" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="IdRole" />
+          </Key>
+          <Property Name="IdRole" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LibelleRole" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Acteurs" Relationship="Self.FK_Acteur_IdRole" FromRole="Role" ToRole="Acteur" />
+        </EntityType>
+        <EntityType Name="StockArticle">
+          <Key>
+            <PropertyRef Name="Reference" />
+          </Key>
+          <Property Name="Reference" Type="Int32" Nullable="false" />
+          <Property Name="Quantite" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Article" Relationship="Self.FK_StockArticle_Reference" FromRole="StockArticle" ToRole="Article" />
+        </EntityType>
+        <Association Name="FK_Acteur_IdRole">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="Acteur" Type="Self.Acteur" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="IdRole" />
+            </Principal>
+            <Dependent Role="Acteur">
+              <PropertyRef Name="IdRole" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Article_IdFournisseur">
+          <End Role="Fournisseur" Type="Self.Fournisseur" Multiplicity="1" />
+          <End Role="Article" Type="Self.Article" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fournisseur">
+              <PropertyRef Name="IdFournisseur" />
+            </Principal>
+            <Dependent Role="Article">
+              <PropertyRef Name="IdFournisseur" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Article_IdGenre">
+          <End Role="Genre" Type="Self.Genre" Multiplicity="1" />
+          <End Role="Article" Type="Self.Article" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Genre">
+              <PropertyRef Name="IdGenre" />
+            </Principal>
+            <Dependent Role="Article">
+              <PropertyRef Name="IdGenre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LigneCommande_Reference">
+          <End Role="Article" Type="Self.Article" Multiplicity="1" />
+          <End Role="LigneCommande" Type="Self.LigneCommande" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Article">
+              <PropertyRef Name="Reference" />
+            </Principal>
+            <Dependent Role="LigneCommande">
+              <PropertyRef Name="Reference" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LigneCommandeFournisseur_Reference">
+          <End Role="Article" Type="Self.Article" Multiplicity="1" />
+          <End Role="LigneCommandeFournisseur" Type="Self.LigneCommandeFournisseur" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Article">
+              <PropertyRef Name="Reference" />
+            </Principal>
+            <Dependent Role="LigneCommandeFournisseur">
+              <PropertyRef Name="Reference" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LigneLivraison_Reference">
+          <End Role="Article" Type="Self.Article" Multiplicity="1" />
+          <End Role="LigneLivraison" Type="Self.LigneLivraison" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Article">
+              <PropertyRef Name="Reference" />
+            </Principal>
+            <Dependent Role="LigneLivraison">
+              <PropertyRef Name="Reference" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StockArticle_Reference">
+          <End Role="Article" Type="Self.Article" Multiplicity="1" />
+          <End Role="StockArticle" Type="Self.StockArticle" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Article">
+              <PropertyRef Name="Reference" />
+            </Principal>
+            <Dependent Role="StockArticle">
+              <PropertyRef Name="Reference" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Genre_IdCategorie">
+          <End Role="Categorie" Type="Self.Categorie" Multiplicity="1" />
+          <End Role="Genre" Type="Self.Genre" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categorie">
+              <PropertyRef Name="IdCategorie" />
+            </Principal>
+            <Dependent Role="Genre">
+              <PropertyRef Name="IdCategorie" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PanierCommande_NumeroClient">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="PanierCommande" Type="Self.PanierCommande" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="NumeroClient" />
+            </Principal>
+            <Dependent Role="PanierCommande">
+              <PropertyRef Name="NumeroClient" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CommandeFournisseur_IdFournisseur">
+          <End Role="Fournisseur" Type="Self.Fournisseur" Multiplicity="1" />
+          <End Role="CommandeFournisseur" Type="Self.CommandeFournisseur" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fournisseur">
+              <PropertyRef Name="IdFournisseur" />
+            </Principal>
+            <Dependent Role="CommandeFournisseur">
+              <PropertyRef Name="IdFournisseur" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LigneCommandeFournisseur_NumeroCommandeFournisseur">
+          <End Role="CommandeFournisseur" Type="Self.CommandeFournisseur" Multiplicity="1" />
+          <End Role="LigneCommandeFournisseur" Type="Self.LigneCommandeFournisseur" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CommandeFournisseur">
+              <PropertyRef Name="NumeroCommandeFournisseur" />
+            </Principal>
+            <Dependent Role="LigneCommandeFournisseur">
+              <PropertyRef Name="NumeroCommandeFournisseur" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LigneCommande_NumeroCommande">
+          <End Role="PanierCommande" Type="Self.PanierCommande" Multiplicity="1" />
+          <End Role="LigneCommande" Type="Self.LigneCommande" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PanierCommande">
+              <PropertyRef Name="NumeroCommande" />
+            </Principal>
+            <Dependent Role="LigneCommande">
+              <PropertyRef Name="NumeroCommande" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LigneLivraison_NumeroLivraison">
+          <End Role="Livraison" Type="Self.Livraison" Multiplicity="1" />
+          <End Role="LigneLivraison" Type="Self.LigneLivraison" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Livraison">
+              <PropertyRef Name="NumeroLivraison" />
+            </Principal>
+            <Dependent Role="LigneLivraison">
+              <PropertyRef Name="NumeroLivraison" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Livraison_NumeroCommande">
+          <End Role="PanierCommande" Type="Self.PanierCommande" Multiplicity="1" />
+          <End Role="Livraison" Type="Self.Livraison" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PanierCommande">
+              <PropertyRef Name="NumeroCommande" />
+            </Principal>
+            <Dependent Role="Livraison">
+              <PropertyRef Name="NumeroCommande" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Paiement_NumeroCommande">
+          <End Role="PanierCommande" Type="Self.PanierCommande" Multiplicity="1" />
+          <End Role="Paiement" Type="Self.Paiement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PanierCommande">
+              <PropertyRef Name="NumeroCommande" />
+            </Principal>
+            <Dependent Role="Paiement">
+              <PropertyRef Name="NumeroCommande" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PanierCommande_IdPaiement">
+          <End Role="Paiement" Type="Self.Paiement" Multiplicity="1" />
+          <End Role="PanierCommande" Type="Self.PanierCommande" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Paiement">
+              <PropertyRef Name="IdPaiement" />
+            </Principal>
+            <Dependent Role="PanierCommande">
+              <PropertyRef Name="IdPaiement" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ActeurArticle">
+          <End Role="Acteur" Type="Self.Acteur" Multiplicity="*" />
+          <End Role="Article" Type="Self.Article" Multiplicity="*" />
+        </Association>
+        <Association Name="PromotionArticle">
+          <End Role="Promotion" Type="Self.Promotion" Multiplicity="*" />
+          <End Role="Article" Type="Self.Article" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="BddEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Acteurs" EntityType="Self.Acteur" />
+          <EntitySet Name="Articles" EntityType="Self.Article" />
+          <EntitySet Name="Categories" EntityType="Self.Categorie" />
+          <EntitySet Name="Clients" EntityType="Self.Client" />
+          <EntitySet Name="CommandeFournisseurs" EntityType="Self.CommandeFournisseur" />
+          <EntitySet Name="Fournisseurs" EntityType="Self.Fournisseur" />
+          <EntitySet Name="Genres" EntityType="Self.Genre" />
+          <EntitySet Name="LigneCommandes" EntityType="Self.LigneCommande" />
+          <EntitySet Name="LigneCommandeFournisseurs" EntityType="Self.LigneCommandeFournisseur" />
+          <EntitySet Name="LigneLivraisons" EntityType="Self.LigneLivraison" />
+          <EntitySet Name="Livraisons" EntityType="Self.Livraison" />
+          <EntitySet Name="Paiements" EntityType="Self.Paiement" />
+          <EntitySet Name="PanierCommandes" EntityType="Self.PanierCommande" />
+          <EntitySet Name="Promotions" EntityType="Self.Promotion" />
+          <EntitySet Name="Roles" EntityType="Self.Role" />
+          <EntitySet Name="StockArticles" EntityType="Self.StockArticle" />
+          <AssociationSet Name="FK_Acteur_IdRole" Association="Self.FK_Acteur_IdRole">
+            <End Role="Role" EntitySet="Roles" />
+            <End Role="Acteur" EntitySet="Acteurs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Article_IdFournisseur" Association="Self.FK_Article_IdFournisseur">
+            <End Role="Fournisseur" EntitySet="Fournisseurs" />
+            <End Role="Article" EntitySet="Articles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Article_IdGenre" Association="Self.FK_Article_IdGenre">
+            <End Role="Genre" EntitySet="Genres" />
+            <End Role="Article" EntitySet="Articles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LigneCommande_Reference" Association="Self.FK_LigneCommande_Reference">
+            <End Role="Article" EntitySet="Articles" />
+            <End Role="LigneCommande" EntitySet="LigneCommandes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LigneCommandeFournisseur_Reference" Association="Self.FK_LigneCommandeFournisseur_Reference">
+            <End Role="Article" EntitySet="Articles" />
+            <End Role="LigneCommandeFournisseur" EntitySet="LigneCommandeFournisseurs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LigneLivraison_Reference" Association="Self.FK_LigneLivraison_Reference">
+            <End Role="Article" EntitySet="Articles" />
+            <End Role="LigneLivraison" EntitySet="LigneLivraisons" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StockArticle_Reference" Association="Self.FK_StockArticle_Reference">
+            <End Role="Article" EntitySet="Articles" />
+            <End Role="StockArticle" EntitySet="StockArticles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Genre_IdCategorie" Association="Self.FK_Genre_IdCategorie">
+            <End Role="Categorie" EntitySet="Categories" />
+            <End Role="Genre" EntitySet="Genres" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PanierCommande_NumeroClient" Association="Self.FK_PanierCommande_NumeroClient">
+            <End Role="Client" EntitySet="Clients" />
+            <End Role="PanierCommande" EntitySet="PanierCommandes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CommandeFournisseur_IdFournisseur" Association="Self.FK_CommandeFournisseur_IdFournisseur">
+            <End Role="Fournisseur" EntitySet="Fournisseurs" />
+            <End Role="CommandeFournisseur" EntitySet="CommandeFournisseurs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LigneCommandeFournisseur_NumeroCommandeFournisseur" Association="Self.FK_LigneCommandeFournisseur_NumeroCommandeFournisseur">
+            <End Role="CommandeFournisseur" EntitySet="CommandeFournisseurs" />
+            <End Role="LigneCommandeFournisseur" EntitySet="LigneCommandeFournisseurs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LigneCommande_NumeroCommande" Association="Self.FK_LigneCommande_NumeroCommande">
+            <End Role="PanierCommande" EntitySet="PanierCommandes" />
+            <End Role="LigneCommande" EntitySet="LigneCommandes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LigneLivraison_NumeroLivraison" Association="Self.FK_LigneLivraison_NumeroLivraison">
+            <End Role="Livraison" EntitySet="Livraisons" />
+            <End Role="LigneLivraison" EntitySet="LigneLivraisons" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Livraison_NumeroCommande" Association="Self.FK_Livraison_NumeroCommande">
+            <End Role="PanierCommande" EntitySet="PanierCommandes" />
+            <End Role="Livraison" EntitySet="Livraisons" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Paiement_NumeroCommande" Association="Self.FK_Paiement_NumeroCommande">
+            <End Role="PanierCommande" EntitySet="PanierCommandes" />
+            <End Role="Paiement" EntitySet="Paiements" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PanierCommande_IdPaiement" Association="Self.FK_PanierCommande_IdPaiement">
+            <End Role="Paiement" EntitySet="Paiements" />
+            <End Role="PanierCommande" EntitySet="PanierCommandes" />
+          </AssociationSet>
+          <AssociationSet Name="ActeurArticle" Association="Self.ActeurArticle">
+            <End Role="Acteur" EntitySet="Acteurs" />
+            <End Role="Article" EntitySet="Articles" />
+          </AssociationSet>
+          <AssociationSet Name="PromotionArticle" Association="Self.PromotionArticle">
+            <End Role="Promotion" EntitySet="Promotions" />
+            <End Role="Article" EntitySet="Articles" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BddModelStoreContainer" CdmEntityContainer="BddEntities">
+          <EntitySetMapping Name="Acteurs">
+            <EntityTypeMapping TypeName="BddModel.Acteur">
+              <MappingFragment StoreEntitySet="Acteur">
+                <ScalarProperty Name="IdActeur" ColumnName="IdActeur" />
+                <ScalarProperty Name="NomActeur" ColumnName="NomActeur" />
+                <ScalarProperty Name="IdRole" ColumnName="IdRole" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Articles">
+            <EntityTypeMapping TypeName="BddModel.Article">
+              <MappingFragment StoreEntitySet="Article">
+                <ScalarProperty Name="Reference" ColumnName="Reference" />
+                <ScalarProperty Name="LibelleArticle" ColumnName="LibelleArticle" />
+                <ScalarProperty Name="Prix" ColumnName="Prix" />
+                <ScalarProperty Name="IdGenre" ColumnName="IdGenre" />
+                <ScalarProperty Name="PrixFournisseur" ColumnName="PrixFournisseur" />
+                <ScalarProperty Name="IdFournisseur" ColumnName="IdFournisseur" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="BddModel.Categorie">
+              <MappingFragment StoreEntitySet="Categorie">
+                <ScalarProperty Name="IdCategorie" ColumnName="IdCategorie" />
+                <ScalarProperty Name="LibelleCategorie" ColumnName="LibelleCategorie" />
+                <ScalarProperty Name="Tva" ColumnName="Tva" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Clients">
+            <EntityTypeMapping TypeName="BddModel.Client">
+              <MappingFragment StoreEntitySet="Client">
+                <ScalarProperty Name="NumeroClient" ColumnName="NumeroClient" />
+                <ScalarProperty Name="NomClient" ColumnName="NomClient" />
+                <ScalarProperty Name="PrenomClient" ColumnName="PrenomClient" />
+                <ScalarProperty Name="AdresseClient" ColumnName="AdresseClient" />
+                <ScalarProperty Name="CodePostalClient" ColumnName="CodePostalClient" />
+                <ScalarProperty Name="VilleClient" ColumnName="VilleClient" />
+                <ScalarProperty Name="EmailClient" ColumnName="EmailClient" />
+                <ScalarProperty Name="MotDePasseClient" ColumnName="MotDePasseClient" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CommandeFournisseurs">
+            <EntityTypeMapping TypeName="BddModel.CommandeFournisseur">
+              <MappingFragment StoreEntitySet="CommandeFournisseur">
+                <ScalarProperty Name="NumeroCommandeFournisseur" ColumnName="NumeroCommandeFournisseur" />
+                <ScalarProperty Name="DateCommandeFournisseur" ColumnName="DateCommandeFournisseur" />
+                <ScalarProperty Name="IdFournisseur" ColumnName="IdFournisseur" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Fournisseurs">
+            <EntityTypeMapping TypeName="BddModel.Fournisseur">
+              <MappingFragment StoreEntitySet="Fournisseur">
+                <ScalarProperty Name="IdFournisseur" ColumnName="IdFournisseur" />
+                <ScalarProperty Name="NomFournisseur" ColumnName="NomFournisseur" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Genres">
+            <EntityTypeMapping TypeName="BddModel.Genre">
+              <MappingFragment StoreEntitySet="Genre">
+                <ScalarProperty Name="IdGenre" ColumnName="IdGenre" />
+                <ScalarProperty Name="LibelleGenre" ColumnName="LibelleGenre" />
+                <ScalarProperty Name="IdCategorie" ColumnName="IdCategorie" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LigneCommandes">
+            <EntityTypeMapping TypeName="BddModel.LigneCommande">
+              <MappingFragment StoreEntitySet="LigneCommande">
+                <ScalarProperty Name="QuantiteCommande" ColumnName="QuantiteCommande" />
+                <ScalarProperty Name="PrixUnitaire" ColumnName="PrixUnitaire" />
+                <ScalarProperty Name="NumeroCommande" ColumnName="NumeroCommande" />
+                <ScalarProperty Name="Reference" ColumnName="Reference" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LigneCommandeFournisseurs">
+            <EntityTypeMapping TypeName="BddModel.LigneCommandeFournisseur">
+              <MappingFragment StoreEntitySet="LigneCommandeFournisseur">
+                <ScalarProperty Name="QuantiteCommandeFournisseur" ColumnName="QuantiteCommandeFournisseur" />
+                <ScalarProperty Name="PrixUnitaireFournisseur" ColumnName="PrixUnitaireFournisseur" />
+                <ScalarProperty Name="NumeroCommandeFournisseur" ColumnName="NumeroCommandeFournisseur" />
+                <ScalarProperty Name="Reference" ColumnName="Reference" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LigneLivraisons">
+            <EntityTypeMapping TypeName="BddModel.LigneLivraison">
+              <MappingFragment StoreEntitySet="LigneLivraison">
+                <ScalarProperty Name="QuantiteLivraison" ColumnName="QuantiteLivraison" />
+                <ScalarProperty Name="NumeroLivraison" ColumnName="NumeroLivraison" />
+                <ScalarProperty Name="Reference" ColumnName="Reference" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Livraisons">
+            <EntityTypeMapping TypeName="BddModel.Livraison">
+              <MappingFragment StoreEntitySet="Livraison">
+                <ScalarProperty Name="NumeroLivraison" ColumnName="NumeroLivraison" />
+                <ScalarProperty Name="DateLivraison" ColumnName="DateLivraison" />
+                <ScalarProperty Name="AccuseReception" ColumnName="AccuseReception" />
+                <ScalarProperty Name="LivraisonComplete" ColumnName="LivraisonComplete" />
+                <ScalarProperty Name="NumeroCommande" ColumnName="NumeroCommande" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Paiements">
+            <EntityTypeMapping TypeName="BddModel.Paiement">
+              <MappingFragment StoreEntitySet="Paiement">
+                <ScalarProperty Name="IdPaiement" ColumnName="IdPaiement" />
+                <ScalarProperty Name="MontantPaiement" ColumnName="MontantPaiement" />
+                <ScalarProperty Name="ModePaiement" ColumnName="ModePaiement" />
+                <ScalarProperty Name="NumeroCommande" ColumnName="NumeroCommande" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PanierCommandes">
+            <EntityTypeMapping TypeName="BddModel.PanierCommande">
+              <MappingFragment StoreEntitySet="PanierCommande">
+                <ScalarProperty Name="NumeroCommande" ColumnName="NumeroCommande" />
+                <ScalarProperty Name="DateCommande" ColumnName="DateCommande" />
+                <ScalarProperty Name="EtatCommande" ColumnName="EtatCommande" />
+                <ScalarProperty Name="IdPaiement" ColumnName="IdPaiement" />
+                <ScalarProperty Name="NumeroClient" ColumnName="NumeroClient" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Promotions">
+            <EntityTypeMapping TypeName="BddModel.Promotion">
+              <MappingFragment StoreEntitySet="Promotion">
+                <ScalarProperty Name="IdPromotion" ColumnName="IdPromotion" />
+                <ScalarProperty Name="Remise" ColumnName="Remise" />
+                <ScalarProperty Name="DateDebut" ColumnName="DateDebut" />
+                <ScalarProperty Name="DateFin" ColumnName="DateFin" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="BddModel.Role">
+              <MappingFragment StoreEntitySet="Role">
+                <ScalarProperty Name="IdRole" ColumnName="IdRole" />
+                <ScalarProperty Name="LibelleRole" ColumnName="LibelleRole" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StockArticles">
+            <EntityTypeMapping TypeName="BddModel.StockArticle">
+              <MappingFragment StoreEntitySet="StockArticle">
+                <ScalarProperty Name="Reference" ColumnName="Reference" />
+                <ScalarProperty Name="Quantite" ColumnName="Quantite" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="ActeurArticle" TypeName="BddModel.ActeurArticle" StoreEntitySet="ActeurArticle">
+            <EndProperty Name="Acteur">
+              <ScalarProperty Name="IdActeur" ColumnName="IdActeur" />
+            </EndProperty>
+            <EndProperty Name="Article">
+              <ScalarProperty Name="Reference" ColumnName="Reference" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="PromotionArticle" TypeName="BddModel.PromotionArticle" StoreEntitySet="PromotionArticle">
+            <EndProperty Name="Promotion">
+              <ScalarProperty Name="IdPromotion" ColumnName="IdPromotion" />
+            </EndProperty>
+            <EndProperty Name="Article">
+              <ScalarProperty Name="Reference" ColumnName="Reference" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Aucun" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

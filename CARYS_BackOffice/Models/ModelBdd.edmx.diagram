@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="bf6568d8a24540a18bf4af982cc0f737" Name="Diagram1">
+        <EntityTypeShape EntityType="BddModel.Acteur" Width="1.5" PointX="0.75" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="BddModel.Article" Width="1.5" PointX="3" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="BddModel.Categorie" Width="1.5" PointX="1.5" PointY="15" IsExpanded="true" />
+        <EntityTypeShape EntityType="BddModel.Client" Width="1.5" PointX="1.5" PointY="27.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="BddModel.CommandeFournisseur" Width="1.5" PointX="3" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="BddModel.Fournisseur" Width="1.5" PointX="0.75" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="BddModel.Genre" Width="1.5" PointX="0.75" PointY="9.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="BddModel.LigneCommande" Width="1.5" PointX="5.25" PointY="6.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="BddModel.LigneCommandeFournisseur" Width="1.5" PointX="5.25" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="BddModel.LigneLivraison" Width="1.5" PointX="5.25" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="BddModel.Livraison" Width="1.5" PointX="3" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BddModel.Paiement" Width="1.5" PointX="1.5" PointY="30.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="BddModel.PanierCommande" Width="1.5" PointX="0.75" PointY="22.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="BddModel.Promotion" Width="1.5" PointX="0.75" PointY="17.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="BddModel.Role" Width="1.5" PointX="1.5" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="BddModel.StockArticle" Width="1.5" PointX="5.25" PointY="15.75" IsExpanded="true" />
+        <AssociationConnector Association="BddModel.FK_Acteur_IdRole" ManuallyRouted="false" />
+        <AssociationConnector Association="BddModel.FK_Article_IdFournisseur" ManuallyRouted="false" />
+        <AssociationConnector Association="BddModel.FK_Article_IdGenre" ManuallyRouted="false" />
+        <AssociationConnector Association="BddModel.FK_LigneCommande_Reference" ManuallyRouted="false" />
+        <AssociationConnector Association="BddModel.FK_LigneCommandeFournisseur_Reference" ManuallyRouted="false" />
+        <AssociationConnector Association="BddModel.FK_LigneLivraison_Reference" ManuallyRouted="false" />
+        <AssociationConnector Association="BddModel.FK_StockArticle_Reference" ManuallyRouted="false" />
+        <AssociationConnector Association="BddModel.FK_Genre_IdCategorie" ManuallyRouted="false" />
+        <AssociationConnector Association="BddModel.FK_PanierCommande_NumeroClient" ManuallyRouted="false" />
+        <AssociationConnector Association="BddModel.FK_CommandeFournisseur_IdFournisseur" ManuallyRouted="false" />
+        <AssociationConnector Association="BddModel.FK_LigneCommandeFournisseur_NumeroCommandeFournisseur" ManuallyRouted="false" />
+        <AssociationConnector Association="BddModel.FK_LigneCommande_NumeroCommande" ManuallyRouted="false" />
+        <AssociationConnector Association="BddModel.FK_LigneLivraison_NumeroLivraison" ManuallyRouted="false" />
+        <AssociationConnector Association="BddModel.FK_Livraison_NumeroCommande" ManuallyRouted="false" />
+        <AssociationConnector Association="BddModel.FK_Paiement_NumeroCommande" ManuallyRouted="false" />
+        <AssociationConnector Association="BddModel.FK_PanierCommande_IdPaiement" ManuallyRouted="false" />
+        <AssociationConnector Association="BddModel.ActeurArticle" ManuallyRouted="false" />
+        <AssociationConnector Association="BddModel.PromotionArticle" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
