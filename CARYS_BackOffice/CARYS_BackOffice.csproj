@@ -71,6 +71,8 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CommandeFournisseur.aspx" />
+    <Content Include="Content\Style.css" />
     <Content Include="packages.config" />
     <EntityDeploy Include="Models\ModelBdd.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
@@ -122,6 +124,13 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandeFournisseur.aspx.cs">
+      <DependentUpon>CommandeFournisseur.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CommandeFournisseur.aspx.designer.cs">
+      <DependentUpon>CommandeFournisseur.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Fournisseur.aspx.cs">
       <DependentUpon>Fournisseur.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

@@ -25,7 +25,7 @@
         <asp:EntityDataSource ID="EdsListeFournisseurs" runat="server" ConnectionString="name=BddEntities" DefaultContainerName="BddEntities" EnableDelete="True" EnableFlattening="False" EnableUpdate="True" EntitySetName="Fournisseurs"></asp:EntityDataSource>
         <asp:GridView ID="GridViewFournisseurs" CssClass="table table-responsive" runat="server" DataSourceID="EdsListeFournisseurs" AllowPaging="True" AllowSorting="True" AutoGenerateColumns="False" GridLines="None">
             <Columns>
-                <asp:BoundField DataField="IdFournisseur" HeaderText="IdFrounisseur" ReadOnly="True" SortExpression="IdFournisseur"></asp:BoundField>
+                <asp:BoundField DataField="IdFournisseur" HeaderText="Id" ReadOnly="True" SortExpression="IdFournisseur"></asp:BoundField>
                 <asp:BoundField DataField="NomFournisseur" HeaderText="Nom Fournisseur" SortExpression="NomFournisseur"></asp:BoundField>
                 <asp:CommandField ShowEditButton="True" ShowDeleteButton="True" HeaderText="Action">
                     <ControlStyle CssClass="btn btn-primary"></ControlStyle>

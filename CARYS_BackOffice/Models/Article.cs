@@ -29,6 +29,7 @@ namespace CARYS_BackOffice.Models
         public int IdGenre { get; set; }
         public Nullable<double> PrixFournisseur { get; set; }
         public int IdFournisseur { get; set; }
+        public Nullable<bool> Reapprovisionnable { get; set; }
     
         public virtual Fournisseur Fournisseur { get; set; }
         public virtual Genre Genre { get; set; }

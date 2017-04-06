@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="BddModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="BddModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Acteur">
           <Key>
             <PropertyRef Name="IdActeur" />
@@ -31,6 +31,7 @@
           <Property Name="IdGenre" Type="int" Nullable="false" />
           <Property Name="PrixFournisseur" Type="float" />
           <Property Name="IdFournisseur" Type="int" Nullable="false" />
+          <Property Name="Reapprovisionnable" Type="bit" />
         </EntityType>
         <EntityType Name="Categorie">
           <Key>
@@ -164,6 +165,7 @@
           </Key>
           <Property Name="Reference" Type="int" Nullable="false" />
           <Property Name="Quantite" Type="int" Nullable="false" />
+          <Property Name="QuantiteReservee" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK_Acteur_IdRole">
           <End Role="Role" Type="Self.Role" Multiplicity="1" />
@@ -393,18 +395,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_StockArticle_Reference">
-          <End Role="Article" Type="Self.Article" Multiplicity="1" />
-          <End Role="StockArticle" Type="Self.StockArticle" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Article">
-              <PropertyRef Name="Reference" />
-            </Principal>
-            <Dependent Role="StockArticle">
-              <PropertyRef Name="Reference" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="BddModelStoreContainer">
           <EntitySet Name="Acteur" EntityType="Self.Acteur" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ActeurArticle" EntityType="Self.ActeurArticle" Schema="dbo" store:Type="Tables" />
@@ -500,13 +490,8 @@
             <End Role="Article" EntitySet="Article" />
             <End Role="PromotionArticle" EntitySet="PromotionArticle" />
           </AssociationSet>
-          <AssociationSet Name="FK_StockArticle_Reference" Association="Self.FK_StockArticle_Reference">
-            <End Role="Article" EntitySet="Article" />
-            <End Role="StockArticle" EntitySet="StockArticle" />
-          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="BddModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -538,6 +523,7 @@
           <NavigationProperty Name="StockArticle" Relationship="Self.FK_StockArticle_Reference" FromRole="Article" ToRole="StockArticle" />
           <NavigationProperty Name="Acteurs" Relationship="Self.ActeurArticle" FromRole="Article" ToRole="Acteur" />
           <NavigationProperty Name="Promotions" Relationship="Self.PromotionArticle" FromRole="Article" ToRole="Promotion" />
+          <Property Name="Reapprovisionnable" Type="Boolean" />
         </EntityType>
         <EntityType Name="Categorie">
           <Key>
@@ -689,6 +675,7 @@
           <Property Name="Reference" Type="Int32" Nullable="false" />
           <Property Name="Quantite" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Article" Relationship="Self.FK_StockArticle_Reference" FromRole="StockArticle" ToRole="Article" />
+          <Property Name="QuantiteReservee" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK_Acteur_IdRole">
           <End Role="Role" Type="Self.Role" Multiplicity="1" />
@@ -998,6 +985,7 @@
           <EntitySetMapping Name="Articles">
             <EntityTypeMapping TypeName="BddModel.Article">
               <MappingFragment StoreEntitySet="Article">
+                <ScalarProperty Name="Reapprovisionnable" ColumnName="Reapprovisionnable" />
                 <ScalarProperty Name="Reference" ColumnName="Reference" />
                 <ScalarProperty Name="LibelleArticle" ColumnName="LibelleArticle" />
                 <ScalarProperty Name="Prix" ColumnName="Prix" />
@@ -1138,6 +1126,7 @@
           <EntitySetMapping Name="StockArticles">
             <EntityTypeMapping TypeName="BddModel.StockArticle">
               <MappingFragment StoreEntitySet="StockArticle">
+                <ScalarProperty Name="QuantiteReservee" ColumnName="QuantiteReservee" />
                 <ScalarProperty Name="Reference" ColumnName="Reference" />
                 <ScalarProperty Name="Quantite" ColumnName="Quantite" />
               </MappingFragment>

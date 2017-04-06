@@ -16,6 +16,7 @@ namespace CARYS_BackOffice.Models
     {
         public int Reference { get; set; }
         public int Quantite { get; set; }
+        public int QuantiteReservee { get; set; }
     
         public virtual Article Article { get; set; }
     }
