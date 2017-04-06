@@ -57,7 +57,8 @@ namespace CARYS_BackOffice
                 BddEntities bdd = new BddEntities();
 
                 var liste = from article in bdd.Articles
-                            join ligneCommande in bdd.LigneCommandeFournisseurs on article.Reference equals ligneCommande.Reference
+                            join ligneCommande in bdd.LigneCommandeFournisseurs on article.Reference 
+                            equals ligneCommande.Reference
                             where ligneCommande.NumeroCommandeFournisseur == id
                             select new { ligneCommande.NumeroCommandeFournisseur, article.LibelleArticle, article.PrixFournisseur, ligneCommande.QuantiteCommandeFournisseur };
 
