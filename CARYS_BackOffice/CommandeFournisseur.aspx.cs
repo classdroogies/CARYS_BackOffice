@@ -12,7 +12,7 @@ namespace CARYS_BackOffice
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            
         }
 
         /// <summary>
@@ -33,12 +33,13 @@ namespace CARYS_BackOffice
         }
 
         /// <summary>
-        /// 
+        /// Méthode appelée quand l'utilisateur selectionne le fournisseur auquel on passe une commande
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         protected void DropDownListFournisseur_SelectedIndexChanged(object sender, EventArgs e)
         {
+            // Mise à jour de la liste des articles associés au fournisseur sélectionné
             DropDownListArticle.DataBind();
         }
 
@@ -56,11 +57,14 @@ namespace CARYS_BackOffice
 
                 BddEntities bdd = new BddEntities();
 
-                var liste = from article in bdd.Articles
-                            join ligneCommande in bdd.LigneCommandeFournisseurs on article.Reference 
+               IEnumerable<ArticlesCommandeFournisseur> liste = from article in bdd.Articles
+                            join ligneCommande in bdd.LigneCommandeFournisseurs on article.Reference
                             equals ligneCommande.Reference
                             where ligneCommande.NumeroCommandeFournisseur == id
-                            select new { ligneCommande.NumeroCommandeFournisseur, article.LibelleArticle, article.PrixFournisseur, ligneCommande.QuantiteCommandeFournisseur };
+                            select new ArticlesCommandeFournisseur { NumeroCommandeFournisseur = ligneCommande.NumeroCommandeFournisseur,
+                                                                     LibelleArticle = article.LibelleArticle,
+                                                                    PrixFournisseur = (double)article.PrixFournisseur,
+                                                                    QuantitéCommandeFournisseur = ligneCommande.QuantiteCommandeFournisseur };
 
                 GridViewCommande.DataSource = liste.ToList();
                 GridViewCommande.DataBind();

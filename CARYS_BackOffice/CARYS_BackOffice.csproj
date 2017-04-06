@@ -124,7 +124,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Code\ArticlesCommandeFournisseur.cs" />
+    <Compile Include="App_Code\ArticlesCommandeFournisseur.cs" />
     <Compile Include="CommandeFournisseur.aspx.cs">
       <DependentUpon>CommandeFournisseur.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
