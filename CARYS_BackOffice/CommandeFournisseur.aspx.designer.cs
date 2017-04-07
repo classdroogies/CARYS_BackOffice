@@ -67,13 +67,22 @@ namespace CARYS_BackOffice {
         protected global::System.Web.UI.WebControls.TextBox TextQuantite;
         
         /// <summary>
-        /// Contrôle TextIdCommande.
+        /// Contrôle BtnAddArticle.
         /// </summary>
         /// <remarks>
         /// Champ généré automatiquement.
         /// Pour modifier, déplacez la déclaration de champ du fichier de concepteur dans le fichier code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextIdCommande;
+        protected global::System.Web.UI.WebControls.Button BtnAddArticle;
+        
+        /// <summary>
+        /// Contrôle HiddenNumeroCommande.
+        /// </summary>
+        /// <remarks>
+        /// Champ généré automatiquement.
+        /// Pour modifier, déplacez la déclaration de champ du fichier de concepteur dans le fichier code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField HiddenNumeroCommande;
         
         /// <summary>
         /// Contrôle GridViewCommande.

@@ -31,12 +31,12 @@
             <asp:TextBox ID="TextQuantite" CssClass="form-control" runat="server"></asp:TextBox>
         </div>
         <div class="col-lg-6">
-            <label for="TextIdCommande">N° Commande : </label>
-            <asp:TextBox ID="TextIdCommande" CssClass="form-control" runat="server"></asp:TextBox>
+            <asp:Button ID="BtnAddArticle" CssClass="btn btn-primary btn-block" runat="server" Text="Ajouter article" OnClick="BtnAddArticle_Click" />
         </div>
     </div>
     <br />
     <div class="row">
+        <asp:HiddenField ID="HiddenNumeroCommande" runat="server" />
         <asp:GridView ID="GridViewCommande" CssClass="table table-responsive" GridLines="None" runat="server"></asp:GridView>
     </div>
 </asp:Content>

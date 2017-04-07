@@ -12,7 +12,7 @@ namespace CARYS_BackOffice
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+
         }
 
         /// <summary>
@@ -50,25 +50,33 @@ namespace CARYS_BackOffice
         /// <param name="e"></param>
         protected void BtnValiderFournisseur_Click(object sender, EventArgs e)
         {
-            if (!String.IsNullOrEmpty(TextIdCommande.Text))
+            // Récupération de l'id du fournisseur sélectionné
+            int id = int.Parse(DropDownListFournisseur.SelectedValue);
+            // Récupération du numero de la nouvelle commande
+            int idCommande = CommandeFournisseurManager.CreateCommandeFournisseur(Context, id);
+            HiddenNumeroCommande.Value = idCommande.ToString();
+            // Mise à jour des données
+            GridViewCommande.DataSource = CommandeFournisseurManager.GetArticlesCommandeAtCommandeFournisseur(idCommande);
+            GridViewCommande.DataBind();
+        }
+
+        /// <summary>
+        /// Méthode appelée quand l'utilisateur clic sur le bouton ajouter article
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void BtnAddArticle_Click(object sender, EventArgs e)
+        {
+            int idCommande = 0;
+
+            int.TryParse(HiddenNumeroCommande.Value, out idCommande);
+            if (true)
             {
-                // Récupération de l'id du fournisseur sélectionné
-                int id = int.Parse(TextIdCommande.Text);
-
-                BddEntities bdd = new BddEntities();
-
-               IEnumerable<ArticlesCommandeFournisseur> liste = from article in bdd.Articles
-                            join ligneCommande in bdd.LigneCommandeFournisseurs on article.Reference
-                            equals ligneCommande.Reference
-                            where ligneCommande.NumeroCommandeFournisseur == id
-                            select new ArticlesCommandeFournisseur { NumeroCommandeFournisseur = ligneCommande.NumeroCommandeFournisseur,
-                                                                     LibelleArticle = article.LibelleArticle,
-                                                                    PrixFournisseur = (double)article.PrixFournisseur,
-                                                                    QuantitéCommandeFournisseur = ligneCommande.QuantiteCommandeFournisseur };
-
-                GridViewCommande.DataSource = liste.ToList();
+                //CommandeFournisseurManager.AddArticleCommandeFournisseur(Context, HiddenNumeroCommande)
                 GridViewCommande.DataBind();
+                System.Diagnostics.Debug.WriteLine("coucou");
             }
+
         }
     }
 }
