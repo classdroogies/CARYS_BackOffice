@@ -4,14 +4,14 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="BddModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="ModelBdd.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Acteur">
           <Key>
             <PropertyRef Name="IdActeur" />
           </Key>
           <Property Name="IdActeur" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="NomActeur" Type="varchar" MaxLength="200" Nullable="false" />
-          <Property Name="IdRole" Type="int" Nullable="false" />
+          <Property Name="IdRoleActeur" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ActeurArticle">
           <Key>
@@ -28,10 +28,13 @@
           <Property Name="Reference" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LibelleArticle" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="Prix" Type="float" Nullable="false" />
-          <Property Name="IdGenre" Type="int" Nullable="false" />
-          <Property Name="PrixFournisseur" Type="float" />
-          <Property Name="IdFournisseur" Type="int" Nullable="false" />
+          <Property Name="PhotoArticle" Type="varchar" MaxLength="200" />
+          <Property Name="DescriptionArticle" Type="text" />
           <Property Name="Reapprovisionnable" Type="bit" />
+          <Property Name="IdStock" Type="int" />
+          <Property Name="IdGenre" Type="int" Nullable="false" />
+          <Property Name="PrixAchat" Type="float" />
+          <Property Name="IdFournisseur" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Categorie">
           <Key>
@@ -52,6 +55,7 @@
           <Property Name="CodePostalClient" Type="varchar" MaxLength="5" Nullable="false" />
           <Property Name="VilleClient" Type="varchar" MaxLength="250" Nullable="false" />
           <Property Name="EmailClient" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="TelephoneClient" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="MotDePasseClient" Type="varchar" MaxLength="250" Nullable="false" />
         </EntityType>
         <EntityType Name="CommandeFournisseur">
@@ -61,6 +65,13 @@
           <Property Name="NumeroCommandeFournisseur" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DateCommandeFournisseur" Type="datetime" Nullable="false" />
           <Property Name="IdFournisseur" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EtatCommande">
+          <Key>
+            <PropertyRef Name="IdEtat" />
+          </Key>
+          <Property Name="IdEtat" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LibelleEtat" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Fournisseur">
           <Key>
@@ -131,8 +142,8 @@
           </Key>
           <Property Name="NumeroCommande" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DateCommande" Type="datetime" Nullable="false" />
-          <Property Name="EtatCommande" Type="varchar" MaxLength="200" Nullable="false" />
-          <Property Name="IdPaiement" Type="int" Nullable="false" />
+          <Property Name="IdEtat" Type="int" Nullable="false" />
+          <Property Name="IdPaiement" Type="int" />
           <Property Name="NumeroClient" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Promotion">
@@ -152,30 +163,32 @@
           <Property Name="Reference" Type="int" Nullable="false" />
           <Property Name="IdPromotion" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="Role">
+        <EntityType Name="RoleActeur">
           <Key>
-            <PropertyRef Name="IdRole" />
+            <PropertyRef Name="IdRoleActeur" />
           </Key>
-          <Property Name="IdRole" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="LibelleRole" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="IdRoleActeur" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LibelleRoleActeur" Type="varchar" MaxLength="200" Nullable="false" />
         </EntityType>
         <EntityType Name="StockArticle">
           <Key>
-            <PropertyRef Name="Reference" />
+            <PropertyRef Name="IdStock" />
           </Key>
-          <Property Name="Reference" Type="int" Nullable="false" />
+          <Property Name="IdStock" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Quantite" Type="int" Nullable="false" />
-          <Property Name="QuantiteReservee" Type="int" Nullable="false" />
+          <Property Name="QuantiteReserve" Type="int" Nullable="false" />
+          <Property Name="Seuil" Type="int" />
+          <Property Name="Reference" Type="int" Nullable="false" />
         </EntityType>
-        <Association Name="FK_Acteur_IdRole">
-          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+        <Association Name="FK_Acteur_IdRoleActeur">
+          <End Role="RoleActeur" Type="Self.RoleActeur" Multiplicity="1" />
           <End Role="Acteur" Type="Self.Acteur" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Role">
-              <PropertyRef Name="IdRole" />
+            <Principal Role="RoleActeur">
+              <PropertyRef Name="IdRoleActeur" />
             </Principal>
             <Dependent Role="Acteur">
-              <PropertyRef Name="IdRole" />
+              <PropertyRef Name="IdRoleActeur" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -347,27 +360,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PanierCommande_IdPaiement">
-          <End Role="Paiement" Type="Self.Paiement" Multiplicity="1" />
+        <Association Name="FK_PanierCommande_IdEtat">
+          <End Role="EtatCommande" Type="Self.EtatCommande" Multiplicity="1" />
           <End Role="PanierCommande" Type="Self.PanierCommande" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Paiement">
-              <PropertyRef Name="IdPaiement" />
+            <Principal Role="EtatCommande">
+              <PropertyRef Name="IdEtat" />
             </Principal>
             <Dependent Role="PanierCommande">
-              <PropertyRef Name="IdPaiement" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PanierCommande_NumeroClient">
-          <End Role="Client" Type="Self.Client" Multiplicity="1" />
-          <End Role="PanierCommande" Type="Self.PanierCommande" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Client">
-              <PropertyRef Name="NumeroClient" />
-            </Principal>
-            <Dependent Role="PanierCommande">
-              <PropertyRef Name="NumeroClient" />
+              <PropertyRef Name="IdEtat" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -395,13 +396,26 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="BddModelStoreContainer">
+        <Association Name="FK_StockArticle_Reference">
+          <End Role="Article" Type="Self.Article" Multiplicity="1" />
+          <End Role="StockArticle" Type="Self.StockArticle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Article">
+              <PropertyRef Name="Reference" />
+            </Principal>
+            <Dependent Role="StockArticle">
+              <PropertyRef Name="Reference" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ModelBddStoreContainer">
           <EntitySet Name="Acteur" EntityType="Self.Acteur" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ActeurArticle" EntityType="Self.ActeurArticle" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Article" EntityType="Self.Article" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Categorie" EntityType="Self.Categorie" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Client" EntityType="Self.Client" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CommandeFournisseur" EntityType="Self.CommandeFournisseur" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EtatCommande" EntityType="Self.EtatCommande" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Fournisseur" EntityType="Self.Fournisseur" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Genre" EntityType="Self.Genre" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LigneCommande" EntityType="Self.LigneCommande" Schema="dbo" store:Type="Tables" />
@@ -412,10 +426,10 @@
           <EntitySet Name="PanierCommande" EntityType="Self.PanierCommande" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Promotion" EntityType="Self.Promotion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PromotionArticle" EntityType="Self.PromotionArticle" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RoleActeur" EntityType="Self.RoleActeur" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StockArticle" EntityType="Self.StockArticle" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_Acteur_IdRole" Association="Self.FK_Acteur_IdRole">
-            <End Role="Role" EntitySet="Role" />
+          <AssociationSet Name="FK_Acteur_IdRoleActeur" Association="Self.FK_Acteur_IdRoleActeur">
+            <End Role="RoleActeur" EntitySet="RoleActeur" />
             <End Role="Acteur" EntitySet="Acteur" />
           </AssociationSet>
           <AssociationSet Name="FK_ActeurArticle_IdActeur" Association="Self.FK_ActeurArticle_IdActeur">
@@ -474,12 +488,8 @@
             <End Role="PanierCommande" EntitySet="PanierCommande" />
             <End Role="Paiement" EntitySet="Paiement" />
           </AssociationSet>
-          <AssociationSet Name="FK_PanierCommande_IdPaiement" Association="Self.FK_PanierCommande_IdPaiement">
-            <End Role="Paiement" EntitySet="Paiement" />
-            <End Role="PanierCommande" EntitySet="PanierCommande" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PanierCommande_NumeroClient" Association="Self.FK_PanierCommande_NumeroClient">
-            <End Role="Client" EntitySet="Client" />
+          <AssociationSet Name="FK_PanierCommande_IdEtat" Association="Self.FK_PanierCommande_IdEtat">
+            <End Role="EtatCommande" EntitySet="EtatCommande" />
             <End Role="PanierCommande" EntitySet="PanierCommande" />
           </AssociationSet>
           <AssociationSet Name="FK_PromotionArticle_IdPromotion" Association="Self.FK_PromotionArticle_IdPromotion">
@@ -490,19 +500,24 @@
             <End Role="Article" EntitySet="Article" />
             <End Role="PromotionArticle" EntitySet="PromotionArticle" />
           </AssociationSet>
+          <AssociationSet Name="FK_StockArticle_Reference" Association="Self.FK_StockArticle_Reference">
+            <End Role="Article" EntitySet="Article" />
+            <End Role="StockArticle" EntitySet="StockArticle" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="BddModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="ModelBdd" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Acteur">
           <Key>
             <PropertyRef Name="IdActeur" />
           </Key>
           <Property Name="IdActeur" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="NomActeur" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="IdRole" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Role" Relationship="Self.FK_Acteur_IdRole" FromRole="Acteur" ToRole="Role" />
+          <Property Name="IdRoleActeur" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="RoleActeur" Relationship="Self.FK_Acteur_IdRoleActeur" FromRole="Acteur" ToRole="RoleActeur" />
           <NavigationProperty Name="Articles" Relationship="Self.ActeurArticle" FromRole="Acteur" ToRole="Article" />
         </EntityType>
         <EntityType Name="Article">
@@ -512,18 +527,21 @@
           <Property Name="Reference" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="LibelleArticle" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Prix" Type="Double" Nullable="false" />
+          <Property Name="PhotoArticle" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="DescriptionArticle" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Reapprovisionnable" Type="Boolean" />
+          <Property Name="IdStock" Type="Int32" />
           <Property Name="IdGenre" Type="Int32" Nullable="false" />
-          <Property Name="PrixFournisseur" Type="Double" />
+          <Property Name="PrixAchat" Type="Double" />
           <Property Name="IdFournisseur" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Fournisseur" Relationship="Self.FK_Article_IdFournisseur" FromRole="Article" ToRole="Fournisseur" />
           <NavigationProperty Name="Genre" Relationship="Self.FK_Article_IdGenre" FromRole="Article" ToRole="Genre" />
           <NavigationProperty Name="LigneCommandes" Relationship="Self.FK_LigneCommande_Reference" FromRole="Article" ToRole="LigneCommande" />
           <NavigationProperty Name="LigneCommandeFournisseurs" Relationship="Self.FK_LigneCommandeFournisseur_Reference" FromRole="Article" ToRole="LigneCommandeFournisseur" />
           <NavigationProperty Name="LigneLivraisons" Relationship="Self.FK_LigneLivraison_Reference" FromRole="Article" ToRole="LigneLivraison" />
-          <NavigationProperty Name="StockArticle" Relationship="Self.FK_StockArticle_Reference" FromRole="Article" ToRole="StockArticle" />
+          <NavigationProperty Name="StockArticles" Relationship="Self.FK_StockArticle_Reference" FromRole="Article" ToRole="StockArticle" />
           <NavigationProperty Name="Acteurs" Relationship="Self.ActeurArticle" FromRole="Article" ToRole="Acteur" />
           <NavigationProperty Name="Promotions" Relationship="Self.PromotionArticle" FromRole="Article" ToRole="Promotion" />
-          <Property Name="Reapprovisionnable" Type="Boolean" />
         </EntityType>
         <EntityType Name="Categorie">
           <Key>
@@ -545,8 +563,8 @@
           <Property Name="CodePostalClient" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="VilleClient" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="EmailClient" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TelephoneClient" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="MotDePasseClient" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="PanierCommandes" Relationship="Self.FK_PanierCommande_NumeroClient" FromRole="Client" ToRole="PanierCommande" />
         </EntityType>
         <EntityType Name="CommandeFournisseur">
           <Key>
@@ -557,6 +575,14 @@
           <Property Name="IdFournisseur" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Fournisseur" Relationship="Self.FK_CommandeFournisseur_IdFournisseur" FromRole="CommandeFournisseur" ToRole="Fournisseur" />
           <NavigationProperty Name="LigneCommandeFournisseurs" Relationship="Self.FK_LigneCommandeFournisseur_NumeroCommandeFournisseur" FromRole="CommandeFournisseur" ToRole="LigneCommandeFournisseur" />
+        </EntityType>
+        <EntityType Name="EtatCommande">
+          <Key>
+            <PropertyRef Name="IdEtat" />
+          </Key>
+          <Property Name="IdEtat" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LibelleEtat" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="PanierCommandes" Relationship="Self.FK_PanierCommande_IdEtat" FromRole="EtatCommande" ToRole="PanierCommande" />
         </EntityType>
         <EntityType Name="Fournisseur">
           <Key>
@@ -633,7 +659,6 @@
           <Property Name="ModePaiement" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="NumeroCommande" Type="Int32" Nullable="false" />
           <NavigationProperty Name="PanierCommande" Relationship="Self.FK_Paiement_NumeroCommande" FromRole="Paiement" ToRole="PanierCommande" />
-          <NavigationProperty Name="PanierCommandes" Relationship="Self.FK_PanierCommande_IdPaiement" FromRole="Paiement" ToRole="PanierCommande" />
         </EntityType>
         <EntityType Name="PanierCommande">
           <Key>
@@ -641,14 +666,13 @@
           </Key>
           <Property Name="NumeroCommande" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DateCommande" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="EtatCommande" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="IdPaiement" Type="Int32" Nullable="false" />
+          <Property Name="IdEtat" Type="Int32" Nullable="false" />
+          <Property Name="IdPaiement" Type="Int32" />
           <Property Name="NumeroClient" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Client" Relationship="Self.FK_PanierCommande_NumeroClient" FromRole="PanierCommande" ToRole="Client" />
+          <NavigationProperty Name="EtatCommande" Relationship="Self.FK_PanierCommande_IdEtat" FromRole="PanierCommande" ToRole="EtatCommande" />
           <NavigationProperty Name="LigneCommandes" Relationship="Self.FK_LigneCommande_NumeroCommande" FromRole="PanierCommande" ToRole="LigneCommande" />
           <NavigationProperty Name="Livraisons" Relationship="Self.FK_Livraison_NumeroCommande" FromRole="PanierCommande" ToRole="Livraison" />
           <NavigationProperty Name="Paiements" Relationship="Self.FK_Paiement_NumeroCommande" FromRole="PanierCommande" ToRole="Paiement" />
-          <NavigationProperty Name="Paiement" Relationship="Self.FK_PanierCommande_IdPaiement" FromRole="PanierCommande" ToRole="Paiement" />
         </EntityType>
         <EntityType Name="Promotion">
           <Key>
@@ -660,32 +684,34 @@
           <Property Name="DateFin" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Articles" Relationship="Self.PromotionArticle" FromRole="Promotion" ToRole="Article" />
         </EntityType>
-        <EntityType Name="Role">
+        <EntityType Name="RoleActeur">
           <Key>
-            <PropertyRef Name="IdRole" />
+            <PropertyRef Name="IdRoleActeur" />
           </Key>
-          <Property Name="IdRole" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LibelleRole" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Acteurs" Relationship="Self.FK_Acteur_IdRole" FromRole="Role" ToRole="Acteur" />
+          <Property Name="IdRoleActeur" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LibelleRoleActeur" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Acteurs" Relationship="Self.FK_Acteur_IdRoleActeur" FromRole="RoleActeur" ToRole="Acteur" />
         </EntityType>
         <EntityType Name="StockArticle">
           <Key>
-            <PropertyRef Name="Reference" />
+            <PropertyRef Name="IdStock" />
           </Key>
-          <Property Name="Reference" Type="Int32" Nullable="false" />
+          <Property Name="IdStock" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Quantite" Type="Int32" Nullable="false" />
+          <Property Name="QuantiteReserve" Type="Int32" Nullable="false" />
+          <Property Name="Seuil" Type="Int32" />
+          <Property Name="Reference" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Article" Relationship="Self.FK_StockArticle_Reference" FromRole="StockArticle" ToRole="Article" />
-          <Property Name="QuantiteReservee" Type="Int32" Nullable="false" />
         </EntityType>
-        <Association Name="FK_Acteur_IdRole">
-          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+        <Association Name="FK_Acteur_IdRoleActeur">
+          <End Role="RoleActeur" Type="Self.RoleActeur" Multiplicity="1" />
           <End Role="Acteur" Type="Self.Acteur" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Role">
-              <PropertyRef Name="IdRole" />
+            <Principal Role="RoleActeur">
+              <PropertyRef Name="IdRoleActeur" />
             </Principal>
             <Dependent Role="Acteur">
-              <PropertyRef Name="IdRole" />
+              <PropertyRef Name="IdRoleActeur" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -751,7 +777,7 @@
         </Association>
         <Association Name="FK_StockArticle_Reference">
           <End Role="Article" Type="Self.Article" Multiplicity="1" />
-          <End Role="StockArticle" Type="Self.StockArticle" Multiplicity="0..1" />
+          <End Role="StockArticle" Type="Self.StockArticle" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Article">
               <PropertyRef Name="Reference" />
@@ -770,18 +796,6 @@
             </Principal>
             <Dependent Role="Genre">
               <PropertyRef Name="IdCategorie" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PanierCommande_NumeroClient">
-          <End Role="Client" Type="Self.Client" Multiplicity="1" />
-          <End Role="PanierCommande" Type="Self.PanierCommande" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Client">
-              <PropertyRef Name="NumeroClient" />
-            </Principal>
-            <Dependent Role="PanierCommande">
-              <PropertyRef Name="NumeroClient" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -806,6 +820,18 @@
             </Principal>
             <Dependent Role="LigneCommandeFournisseur">
               <PropertyRef Name="NumeroCommandeFournisseur" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PanierCommande_IdEtat">
+          <End Role="EtatCommande" Type="Self.EtatCommande" Multiplicity="1" />
+          <End Role="PanierCommande" Type="Self.PanierCommande" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EtatCommande">
+              <PropertyRef Name="IdEtat" />
+            </Principal>
+            <Dependent Role="PanierCommande">
+              <PropertyRef Name="IdEtat" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -857,18 +883,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PanierCommande_IdPaiement">
-          <End Role="Paiement" Type="Self.Paiement" Multiplicity="1" />
-          <End Role="PanierCommande" Type="Self.PanierCommande" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Paiement">
-              <PropertyRef Name="IdPaiement" />
-            </Principal>
-            <Dependent Role="PanierCommande">
-              <PropertyRef Name="IdPaiement" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="ActeurArticle">
           <End Role="Acteur" Type="Self.Acteur" Multiplicity="*" />
           <End Role="Article" Type="Self.Article" Multiplicity="*" />
@@ -883,6 +897,7 @@
           <EntitySet Name="Categories" EntityType="Self.Categorie" />
           <EntitySet Name="Clients" EntityType="Self.Client" />
           <EntitySet Name="CommandeFournisseurs" EntityType="Self.CommandeFournisseur" />
+          <EntitySet Name="EtatCommandes" EntityType="Self.EtatCommande" />
           <EntitySet Name="Fournisseurs" EntityType="Self.Fournisseur" />
           <EntitySet Name="Genres" EntityType="Self.Genre" />
           <EntitySet Name="LigneCommandes" EntityType="Self.LigneCommande" />
@@ -892,10 +907,10 @@
           <EntitySet Name="Paiements" EntityType="Self.Paiement" />
           <EntitySet Name="PanierCommandes" EntityType="Self.PanierCommande" />
           <EntitySet Name="Promotions" EntityType="Self.Promotion" />
-          <EntitySet Name="Roles" EntityType="Self.Role" />
+          <EntitySet Name="RoleActeurs" EntityType="Self.RoleActeur" />
           <EntitySet Name="StockArticles" EntityType="Self.StockArticle" />
-          <AssociationSet Name="FK_Acteur_IdRole" Association="Self.FK_Acteur_IdRole">
-            <End Role="Role" EntitySet="Roles" />
+          <AssociationSet Name="FK_Acteur_IdRoleActeur" Association="Self.FK_Acteur_IdRoleActeur">
+            <End Role="RoleActeur" EntitySet="RoleActeurs" />
             <End Role="Acteur" EntitySet="Acteurs" />
           </AssociationSet>
           <AssociationSet Name="FK_Article_IdFournisseur" Association="Self.FK_Article_IdFournisseur">
@@ -926,10 +941,6 @@
             <End Role="Categorie" EntitySet="Categories" />
             <End Role="Genre" EntitySet="Genres" />
           </AssociationSet>
-          <AssociationSet Name="FK_PanierCommande_NumeroClient" Association="Self.FK_PanierCommande_NumeroClient">
-            <End Role="Client" EntitySet="Clients" />
-            <End Role="PanierCommande" EntitySet="PanierCommandes" />
-          </AssociationSet>
           <AssociationSet Name="FK_CommandeFournisseur_IdFournisseur" Association="Self.FK_CommandeFournisseur_IdFournisseur">
             <End Role="Fournisseur" EntitySet="Fournisseurs" />
             <End Role="CommandeFournisseur" EntitySet="CommandeFournisseurs" />
@@ -937,6 +948,10 @@
           <AssociationSet Name="FK_LigneCommandeFournisseur_NumeroCommandeFournisseur" Association="Self.FK_LigneCommandeFournisseur_NumeroCommandeFournisseur">
             <End Role="CommandeFournisseur" EntitySet="CommandeFournisseurs" />
             <End Role="LigneCommandeFournisseur" EntitySet="LigneCommandeFournisseurs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PanierCommande_IdEtat" Association="Self.FK_PanierCommande_IdEtat">
+            <End Role="EtatCommande" EntitySet="EtatCommandes" />
+            <End Role="PanierCommande" EntitySet="PanierCommandes" />
           </AssociationSet>
           <AssociationSet Name="FK_LigneCommande_NumeroCommande" Association="Self.FK_LigneCommande_NumeroCommande">
             <End Role="PanierCommande" EntitySet="PanierCommandes" />
@@ -954,10 +969,6 @@
             <End Role="PanierCommande" EntitySet="PanierCommandes" />
             <End Role="Paiement" EntitySet="Paiements" />
           </AssociationSet>
-          <AssociationSet Name="FK_PanierCommande_IdPaiement" Association="Self.FK_PanierCommande_IdPaiement">
-            <End Role="Paiement" EntitySet="Paiements" />
-            <End Role="PanierCommande" EntitySet="PanierCommandes" />
-          </AssociationSet>
           <AssociationSet Name="ActeurArticle" Association="Self.ActeurArticle">
             <End Role="Acteur" EntitySet="Acteurs" />
             <End Role="Article" EntitySet="Articles" />
@@ -972,31 +983,34 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="BddModelStoreContainer" CdmEntityContainer="BddEntities">
+        <EntityContainerMapping StorageEntityContainer="ModelBddStoreContainer" CdmEntityContainer="BddEntities">
           <EntitySetMapping Name="Acteurs">
-            <EntityTypeMapping TypeName="BddModel.Acteur">
+            <EntityTypeMapping TypeName="ModelBdd.Acteur">
               <MappingFragment StoreEntitySet="Acteur">
                 <ScalarProperty Name="IdActeur" ColumnName="IdActeur" />
                 <ScalarProperty Name="NomActeur" ColumnName="NomActeur" />
-                <ScalarProperty Name="IdRole" ColumnName="IdRole" />
+                <ScalarProperty Name="IdRoleActeur" ColumnName="IdRoleActeur" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Articles">
-            <EntityTypeMapping TypeName="BddModel.Article">
+            <EntityTypeMapping TypeName="ModelBdd.Article">
               <MappingFragment StoreEntitySet="Article">
-                <ScalarProperty Name="Reapprovisionnable" ColumnName="Reapprovisionnable" />
                 <ScalarProperty Name="Reference" ColumnName="Reference" />
                 <ScalarProperty Name="LibelleArticle" ColumnName="LibelleArticle" />
                 <ScalarProperty Name="Prix" ColumnName="Prix" />
+                <ScalarProperty Name="PhotoArticle" ColumnName="PhotoArticle" />
+                <ScalarProperty Name="DescriptionArticle" ColumnName="DescriptionArticle" />
+                <ScalarProperty Name="Reapprovisionnable" ColumnName="Reapprovisionnable" />
+                <ScalarProperty Name="IdStock" ColumnName="IdStock" />
                 <ScalarProperty Name="IdGenre" ColumnName="IdGenre" />
-                <ScalarProperty Name="PrixFournisseur" ColumnName="PrixFournisseur" />
+                <ScalarProperty Name="PrixAchat" ColumnName="PrixAchat" />
                 <ScalarProperty Name="IdFournisseur" ColumnName="IdFournisseur" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Categories">
-            <EntityTypeMapping TypeName="BddModel.Categorie">
+            <EntityTypeMapping TypeName="ModelBdd.Categorie">
               <MappingFragment StoreEntitySet="Categorie">
                 <ScalarProperty Name="IdCategorie" ColumnName="IdCategorie" />
                 <ScalarProperty Name="LibelleCategorie" ColumnName="LibelleCategorie" />
@@ -1005,7 +1019,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Clients">
-            <EntityTypeMapping TypeName="BddModel.Client">
+            <EntityTypeMapping TypeName="ModelBdd.Client">
               <MappingFragment StoreEntitySet="Client">
                 <ScalarProperty Name="NumeroClient" ColumnName="NumeroClient" />
                 <ScalarProperty Name="NomClient" ColumnName="NomClient" />
@@ -1014,12 +1028,13 @@
                 <ScalarProperty Name="CodePostalClient" ColumnName="CodePostalClient" />
                 <ScalarProperty Name="VilleClient" ColumnName="VilleClient" />
                 <ScalarProperty Name="EmailClient" ColumnName="EmailClient" />
+                <ScalarProperty Name="TelephoneClient" ColumnName="TelephoneClient" />
                 <ScalarProperty Name="MotDePasseClient" ColumnName="MotDePasseClient" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CommandeFournisseurs">
-            <EntityTypeMapping TypeName="BddModel.CommandeFournisseur">
+            <EntityTypeMapping TypeName="ModelBdd.CommandeFournisseur">
               <MappingFragment StoreEntitySet="CommandeFournisseur">
                 <ScalarProperty Name="NumeroCommandeFournisseur" ColumnName="NumeroCommandeFournisseur" />
                 <ScalarProperty Name="DateCommandeFournisseur" ColumnName="DateCommandeFournisseur" />
@@ -1027,8 +1042,16 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="EtatCommandes">
+            <EntityTypeMapping TypeName="ModelBdd.EtatCommande">
+              <MappingFragment StoreEntitySet="EtatCommande">
+                <ScalarProperty Name="IdEtat" ColumnName="IdEtat" />
+                <ScalarProperty Name="LibelleEtat" ColumnName="LibelleEtat" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Fournisseurs">
-            <EntityTypeMapping TypeName="BddModel.Fournisseur">
+            <EntityTypeMapping TypeName="ModelBdd.Fournisseur">
               <MappingFragment StoreEntitySet="Fournisseur">
                 <ScalarProperty Name="IdFournisseur" ColumnName="IdFournisseur" />
                 <ScalarProperty Name="NomFournisseur" ColumnName="NomFournisseur" />
@@ -1036,7 +1059,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Genres">
-            <EntityTypeMapping TypeName="BddModel.Genre">
+            <EntityTypeMapping TypeName="ModelBdd.Genre">
               <MappingFragment StoreEntitySet="Genre">
                 <ScalarProperty Name="IdGenre" ColumnName="IdGenre" />
                 <ScalarProperty Name="LibelleGenre" ColumnName="LibelleGenre" />
@@ -1045,7 +1068,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="LigneCommandes">
-            <EntityTypeMapping TypeName="BddModel.LigneCommande">
+            <EntityTypeMapping TypeName="ModelBdd.LigneCommande">
               <MappingFragment StoreEntitySet="LigneCommande">
                 <ScalarProperty Name="QuantiteCommande" ColumnName="QuantiteCommande" />
                 <ScalarProperty Name="PrixUnitaire" ColumnName="PrixUnitaire" />
@@ -1055,7 +1078,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="LigneCommandeFournisseurs">
-            <EntityTypeMapping TypeName="BddModel.LigneCommandeFournisseur">
+            <EntityTypeMapping TypeName="ModelBdd.LigneCommandeFournisseur">
               <MappingFragment StoreEntitySet="LigneCommandeFournisseur">
                 <ScalarProperty Name="QuantiteCommandeFournisseur" ColumnName="QuantiteCommandeFournisseur" />
                 <ScalarProperty Name="PrixUnitaireFournisseur" ColumnName="PrixUnitaireFournisseur" />
@@ -1065,7 +1088,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="LigneLivraisons">
-            <EntityTypeMapping TypeName="BddModel.LigneLivraison">
+            <EntityTypeMapping TypeName="ModelBdd.LigneLivraison">
               <MappingFragment StoreEntitySet="LigneLivraison">
                 <ScalarProperty Name="QuantiteLivraison" ColumnName="QuantiteLivraison" />
                 <ScalarProperty Name="NumeroLivraison" ColumnName="NumeroLivraison" />
@@ -1074,7 +1097,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Livraisons">
-            <EntityTypeMapping TypeName="BddModel.Livraison">
+            <EntityTypeMapping TypeName="ModelBdd.Livraison">
               <MappingFragment StoreEntitySet="Livraison">
                 <ScalarProperty Name="NumeroLivraison" ColumnName="NumeroLivraison" />
                 <ScalarProperty Name="DateLivraison" ColumnName="DateLivraison" />
@@ -1085,7 +1108,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Paiements">
-            <EntityTypeMapping TypeName="BddModel.Paiement">
+            <EntityTypeMapping TypeName="ModelBdd.Paiement">
               <MappingFragment StoreEntitySet="Paiement">
                 <ScalarProperty Name="IdPaiement" ColumnName="IdPaiement" />
                 <ScalarProperty Name="MontantPaiement" ColumnName="MontantPaiement" />
@@ -1095,18 +1118,18 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PanierCommandes">
-            <EntityTypeMapping TypeName="BddModel.PanierCommande">
+            <EntityTypeMapping TypeName="ModelBdd.PanierCommande">
               <MappingFragment StoreEntitySet="PanierCommande">
                 <ScalarProperty Name="NumeroCommande" ColumnName="NumeroCommande" />
                 <ScalarProperty Name="DateCommande" ColumnName="DateCommande" />
-                <ScalarProperty Name="EtatCommande" ColumnName="EtatCommande" />
+                <ScalarProperty Name="IdEtat" ColumnName="IdEtat" />
                 <ScalarProperty Name="IdPaiement" ColumnName="IdPaiement" />
                 <ScalarProperty Name="NumeroClient" ColumnName="NumeroClient" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Promotions">
-            <EntityTypeMapping TypeName="BddModel.Promotion">
+            <EntityTypeMapping TypeName="ModelBdd.Promotion">
               <MappingFragment StoreEntitySet="Promotion">
                 <ScalarProperty Name="IdPromotion" ColumnName="IdPromotion" />
                 <ScalarProperty Name="Remise" ColumnName="Remise" />
@@ -1115,24 +1138,26 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Roles">
-            <EntityTypeMapping TypeName="BddModel.Role">
-              <MappingFragment StoreEntitySet="Role">
-                <ScalarProperty Name="IdRole" ColumnName="IdRole" />
-                <ScalarProperty Name="LibelleRole" ColumnName="LibelleRole" />
+          <EntitySetMapping Name="RoleActeurs">
+            <EntityTypeMapping TypeName="ModelBdd.RoleActeur">
+              <MappingFragment StoreEntitySet="RoleActeur">
+                <ScalarProperty Name="IdRoleActeur" ColumnName="IdRoleActeur" />
+                <ScalarProperty Name="LibelleRoleActeur" ColumnName="LibelleRoleActeur" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="StockArticles">
-            <EntityTypeMapping TypeName="BddModel.StockArticle">
+            <EntityTypeMapping TypeName="ModelBdd.StockArticle">
               <MappingFragment StoreEntitySet="StockArticle">
-                <ScalarProperty Name="QuantiteReservee" ColumnName="QuantiteReservee" />
-                <ScalarProperty Name="Reference" ColumnName="Reference" />
+                <ScalarProperty Name="IdStock" ColumnName="IdStock" />
                 <ScalarProperty Name="Quantite" ColumnName="Quantite" />
+                <ScalarProperty Name="QuantiteReserve" ColumnName="QuantiteReserve" />
+                <ScalarProperty Name="Seuil" ColumnName="Seuil" />
+                <ScalarProperty Name="Reference" ColumnName="Reference" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="ActeurArticle" TypeName="BddModel.ActeurArticle" StoreEntitySet="ActeurArticle">
+          <AssociationSetMapping Name="ActeurArticle" TypeName="ModelBdd.ActeurArticle" StoreEntitySet="ActeurArticle">
             <EndProperty Name="Acteur">
               <ScalarProperty Name="IdActeur" ColumnName="IdActeur" />
             </EndProperty>
@@ -1140,7 +1165,7 @@
               <ScalarProperty Name="Reference" ColumnName="Reference" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="PromotionArticle" TypeName="BddModel.PromotionArticle" StoreEntitySet="PromotionArticle">
+          <AssociationSetMapping Name="PromotionArticle" TypeName="ModelBdd.PromotionArticle" StoreEntitySet="PromotionArticle">
             <EndProperty Name="Promotion">
               <ScalarProperty Name="IdPromotion" ColumnName="IdPromotion" />
             </EndProperty>

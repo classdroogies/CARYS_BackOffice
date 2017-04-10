@@ -30,6 +30,7 @@ namespace CARYS_BackOffice.Models
         public DbSet<Categorie> Categories { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<CommandeFournisseur> CommandeFournisseurs { get; set; }
+        public DbSet<EtatCommande> EtatCommandes { get; set; }
         public DbSet<Fournisseur> Fournisseurs { get; set; }
         public DbSet<Genre> Genres { get; set; }
         public DbSet<LigneCommande> LigneCommandes { get; set; }
@@ -39,7 +40,7 @@ namespace CARYS_BackOffice.Models
         public DbSet<Paiement> Paiements { get; set; }
         public DbSet<PanierCommande> PanierCommandes { get; set; }
         public DbSet<Promotion> Promotions { get; set; }
-        public DbSet<Role> Roles { get; set; }
+        public DbSet<RoleActeur> RoleActeurs { get; set; }
         public DbSet<StockArticle> StockArticles { get; set; }
     }
 }

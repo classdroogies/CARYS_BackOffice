@@ -11,6 +11,7 @@ namespace CARYS_BackOffice
     {
         protected void Application_Start(object sender, EventArgs e)
         {
+            
         }
     }
 }

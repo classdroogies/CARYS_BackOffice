@@ -12,16 +12,16 @@ namespace CARYS_BackOffice.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Client
+    public partial class RoleActeur
     {
-        public int NumeroClient { get; set; }
-        public string NomClient { get; set; }
-        public string PrenomClient { get; set; }
-        public string AdresseClient { get; set; }
-        public string CodePostalClient { get; set; }
-        public string VilleClient { get; set; }
-        public string EmailClient { get; set; }
-        public string TelephoneClient { get; set; }
-        public string MotDePasseClient { get; set; }
+        public RoleActeur()
+        {
+            this.Acteurs = new HashSet<Acteur>();
+        }
+    
+        public int IdRoleActeur { get; set; }
+        public string LibelleRoleActeur { get; set; }
+    
+        public virtual ICollection<Acteur> Acteurs { get; set; }
     }
 }

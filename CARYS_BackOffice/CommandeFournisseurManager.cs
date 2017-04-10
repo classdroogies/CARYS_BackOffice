@@ -6,7 +6,7 @@ using System.Linq;
 using System.Web;
 
 namespace CARYS_BackOffice
-{ 
+{
     public class CommandeFournisseurManager
     {
         // Récupération de l'entité de la base
@@ -17,7 +17,6 @@ namespace CARYS_BackOffice
         /// </summary>
         private CommandeFournisseurManager()
         {
-
         }
 
         /// <summary>
@@ -35,8 +34,8 @@ namespace CARYS_BackOffice
                                                              {
                                                                  NumeroCommandeFournisseur = ligneCommande.NumeroCommandeFournisseur,
                                                                  LibelleArticle = article.LibelleArticle,
-                                                                 PrixFournisseur = (double)article.PrixFournisseur,
-                                                                 QuantitéCommandeFournisseur = ligneCommande.QuantiteCommandeFournisseur
+                                                                 PrixFournisseur = (double)article.PrixAchat,
+                                                                 QuantiteCommmandeFournisseur = ligneCommande.QuantiteCommandeFournisseur
                                                              };
             return liste.ToList();
         }
@@ -60,6 +59,9 @@ namespace CARYS_BackOffice
                 _bdd.SaveChanges();
                 // Mise à jour de l'id de la nouvelle commande
                 idNewCommande = _bdd.CommandeFournisseurs.Select(c => c.NumeroCommandeFournisseur).OrderByDescending(p => p).FirstOrDefault();
+
+                // Création de la commande dans la session
+                context.Session.Add("CommandeFournisseur", new List<ArticlesCommandeFournisseur>());
             }
             catch (Exception)
             {
@@ -70,17 +72,43 @@ namespace CARYS_BackOffice
             return idNewCommande;
         }
 
+        /// <summary>
+        /// Permet l'ajout d'un article à la commande fournisseur en cours
+        /// </summary>
+        /// <param name="context">Le context de la page</param>
+        /// <param name="idCommande">L'id de la commande</param>
+        /// <param name="quantite">Le nombre d'article à commander</param>
+        /// <param name="reference">La référence de l'article à commander</param>
         public static void AddArticleCommandeFournisseur(HttpContext context, int idCommande, int quantite, int reference)
         {
-            // Ajout d'un article à la commande
-            LigneCommandeFournisseur ligneCommande = new LigneCommandeFournisseur();
-            ligneCommande.NumeroCommandeFournisseur = idCommande;
-            ligneCommande.QuantiteCommandeFournisseur = quantite;
-            ligneCommande.Reference = reference;
-            // Ajout de la ligne de commande à l'entité de la base
-            _bdd.LigneCommandeFournisseurs.Add(ligneCommande);
-            // Mise à jour de la base
-            _bdd.SaveChanges();
+            try
+            {
+                // Vérification de la présence de l'article dans la commande
+                bool articleExist = (from a in _bdd.LigneCommandeFournisseurs
+                                     where (a.Reference == reference && a.NumeroCommandeFournisseur == idCommande)
+                                     select a.NumeroCommandeFournisseur).Any();
+                if (articleExist)
+                {
+                    context.Response.Write("Article déja dans la commande!");
+                }
+                else
+                {
+                    // Ajout d'un article à la commande
+                    LigneCommandeFournisseur ligneCommande = new LigneCommandeFournisseur();
+                    ligneCommande.NumeroCommandeFournisseur = idCommande;
+                    ligneCommande.QuantiteCommandeFournisseur = quantite;
+                    ligneCommande.Reference = reference;
+                    // Ajout de la ligne de commande à l'entité de la base
+                    _bdd.LigneCommandeFournisseurs.Add(ligneCommande);
+                    // Mise à jour de la base
+                    _bdd.SaveChanges();
+                }
+            }
+            catch (Exception)
+            {
+                context.Response.Write("Erreur d'ajout !");
+                //throw;
+            }
         }
     }
 }

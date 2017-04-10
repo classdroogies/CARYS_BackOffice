@@ -23,14 +23,13 @@ namespace CARYS_BackOffice.Models
     
         public int NumeroCommande { get; set; }
         public System.DateTime DateCommande { get; set; }
-        public string EtatCommande { get; set; }
-        public int IdPaiement { get; set; }
+        public int IdEtat { get; set; }
+        public Nullable<int> IdPaiement { get; set; }
         public int NumeroClient { get; set; }
     
-        public virtual Client Client { get; set; }
+        public virtual EtatCommande EtatCommande { get; set; }
         public virtual ICollection<LigneCommande> LigneCommandes { get; set; }
         public virtual ICollection<Livraison> Livraisons { get; set; }
         public virtual ICollection<Paiement> Paiements { get; set; }
-        public virtual Paiement Paiement { get; set; }
     }
 }

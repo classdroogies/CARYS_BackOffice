@@ -74,14 +74,16 @@
     <Content Include="CommandeFournisseur.aspx" />
     <Content Include="Content\Style.css" />
     <Content Include="packages.config" />
+    <Content Include="MainPage.Master" />
+    <Content Include="Scripts\jquery-1.9.1.min.map" />
     <EntityDeploy Include="Models\ModelBdd.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>ModelBdd.Designer.cs</LastGenOutput>
     </EntityDeploy>
     <Content Include="Models\ModelBdd.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ModelBdd.Context.cs</LastGenOutput>
       <DependentUpon>ModelBdd.edmx</DependentUpon>
+      <LastGenOutput>ModelBdd.Context.cs</LastGenOutput>
     </Content>
     <Content Include="Models\ModelBdd.edmx.diagram">
       <DependentUpon>ModelBdd.edmx</DependentUpon>
@@ -91,8 +93,6 @@
       <DependentUpon>ModelBdd.edmx</DependentUpon>
       <LastGenOutput>ModelBdd.cs</LastGenOutput>
     </Content>
-    <Content Include="MainPage.Master" />
-    <Content Include="Scripts\jquery-1.9.1.min.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -165,6 +165,9 @@
     <Compile Include="Models\CommandeFournisseur.cs">
       <DependentUpon>ModelBdd.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\EtatCommande.cs">
+      <DependentUpon>ModelBdd.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Fournisseur.cs">
       <DependentUpon>ModelBdd.tt</DependentUpon>
     </Compile>
@@ -207,7 +210,7 @@
     <Compile Include="Models\Promotion.cs">
       <DependentUpon>ModelBdd.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Role.cs">
+    <Compile Include="Models\RoleActeur.cs">
       <DependentUpon>ModelBdd.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\StockArticle.cs">

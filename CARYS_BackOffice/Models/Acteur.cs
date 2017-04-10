@@ -21,9 +21,9 @@ namespace CARYS_BackOffice.Models
     
         public int IdActeur { get; set; }
         public string NomActeur { get; set; }
-        public int IdRole { get; set; }
+        public int IdRoleActeur { get; set; }
     
-        public virtual Role Role { get; set; }
+        public virtual RoleActeur RoleActeur { get; set; }
         public virtual ICollection<Article> Articles { get; set; }
     }
 }

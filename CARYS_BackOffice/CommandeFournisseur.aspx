@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="col-lg-6">
-            <asp:Button ID="BtnValiderFournisseur" CssClass="btn btn-primary btn-block" runat="server" Text="Nouvelle commande" OnClick="BtnValiderFournisseur_Click" />
+            <asp:Button ID="BtnValiderFournisseur" CssClass="btn btn-primary btn-block" runat="server" Text="Nouvelle commande" OnClick="BtnNouvelleCommandeFournisseur_Click" />
         </div>
     </div>
     <div class="row">

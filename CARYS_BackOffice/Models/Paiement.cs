@@ -14,17 +14,11 @@ namespace CARYS_BackOffice.Models
     
     public partial class Paiement
     {
-        public Paiement()
-        {
-            this.PanierCommandes = new HashSet<PanierCommande>();
-        }
-    
         public int IdPaiement { get; set; }
         public double MontantPaiement { get; set; }
         public string ModePaiement { get; set; }
         public int NumeroCommande { get; set; }
     
         public virtual PanierCommande PanierCommande { get; set; }
-        public virtual ICollection<PanierCommande> PanierCommandes { get; set; }
     }
 }

@@ -12,16 +12,16 @@ namespace CARYS_BackOffice.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Role
+    public partial class EtatCommande
     {
-        public Role()
+        public EtatCommande()
         {
-            this.Acteurs = new HashSet<Acteur>();
+            this.PanierCommandes = new HashSet<PanierCommande>();
         }
     
-        public int IdRole { get; set; }
-        public string LibelleRole { get; set; }
+        public int IdEtat { get; set; }
+        public string LibelleEtat { get; set; }
     
-        public virtual ICollection<Acteur> Acteurs { get; set; }
+        public virtual ICollection<PanierCommande> PanierCommandes { get; set; }
     }
 }

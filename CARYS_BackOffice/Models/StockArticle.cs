@@ -14,9 +14,11 @@ namespace CARYS_BackOffice.Models
     
     public partial class StockArticle
     {
-        public int Reference { get; set; }
+        public int IdStock { get; set; }
         public int Quantite { get; set; }
-        public int QuantiteReservee { get; set; }
+        public int QuantiteReserve { get; set; }
+        public Nullable<int> Seuil { get; set; }
+        public int Reference { get; set; }
     
         public virtual Article Article { get; set; }
     }

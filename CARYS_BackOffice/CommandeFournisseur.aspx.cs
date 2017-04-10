@@ -48,7 +48,7 @@ namespace CARYS_BackOffice
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected void BtnValiderFournisseur_Click(object sender, EventArgs e)
+        protected void BtnNouvelleCommandeFournisseur_Click(object sender, EventArgs e)
         {
             // Récupération de l'id du fournisseur sélectionné
             int id = int.Parse(DropDownListFournisseur.SelectedValue);
@@ -69,12 +69,15 @@ namespace CARYS_BackOffice
         {
             int idCommande = 0;
 
-            int.TryParse(HiddenNumeroCommande.Value, out idCommande);
-            if (true)
+            if (int.TryParse(HiddenNumeroCommande.Value, out idCommande))
             {
-                //CommandeFournisseurManager.AddArticleCommandeFournisseur(Context, HiddenNumeroCommande)
-                GridViewCommande.DataBind();
-                System.Diagnostics.Debug.WriteLine("coucou");
+                int quantite = 0;
+                if (int.TryParse(TextQuantite.Text, out quantite))
+                {
+                    CommandeFournisseurManager.AddArticleCommandeFournisseur(Context, idCommande, quantite, int.Parse(DropDownListArticle.SelectedValue));
+                    GridViewCommande.DataSource = CommandeFournisseurManager.GetArticlesCommandeAtCommandeFournisseur(idCommande);
+                    GridViewCommande.DataBind();
+                }
             }
 
         }

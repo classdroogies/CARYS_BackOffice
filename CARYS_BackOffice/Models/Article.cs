@@ -19,6 +19,7 @@ namespace CARYS_BackOffice.Models
             this.LigneCommandes = new HashSet<LigneCommande>();
             this.LigneCommandeFournisseurs = new HashSet<LigneCommandeFournisseur>();
             this.LigneLivraisons = new HashSet<LigneLivraison>();
+            this.StockArticles = new HashSet<StockArticle>();
             this.Acteurs = new HashSet<Acteur>();
             this.Promotions = new HashSet<Promotion>();
         }
@@ -26,17 +27,20 @@ namespace CARYS_BackOffice.Models
         public int Reference { get; set; }
         public string LibelleArticle { get; set; }
         public double Prix { get; set; }
-        public int IdGenre { get; set; }
-        public Nullable<double> PrixFournisseur { get; set; }
-        public int IdFournisseur { get; set; }
+        public string PhotoArticle { get; set; }
+        public string DescriptionArticle { get; set; }
         public Nullable<bool> Reapprovisionnable { get; set; }
+        public Nullable<int> IdStock { get; set; }
+        public int IdGenre { get; set; }
+        public Nullable<double> PrixAchat { get; set; }
+        public int IdFournisseur { get; set; }
     
         public virtual Fournisseur Fournisseur { get; set; }
         public virtual Genre Genre { get; set; }
         public virtual ICollection<LigneCommande> LigneCommandes { get; set; }
         public virtual ICollection<LigneCommandeFournisseur> LigneCommandeFournisseurs { get; set; }
         public virtual ICollection<LigneLivraison> LigneLivraisons { get; set; }
-        public virtual StockArticle StockArticle { get; set; }
+        public virtual ICollection<StockArticle> StockArticles { get; set; }
         public virtual ICollection<Acteur> Acteurs { get; set; }
         public virtual ICollection<Promotion> Promotions { get; set; }
     }
