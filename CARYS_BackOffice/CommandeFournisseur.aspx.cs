@@ -1,4 +1,6 @@
-﻿using CARYS_BackOffice.Models;
+﻿using CARYS_BackOffice.App_Code.Entity;
+using CARYS_BackOffice.App_Code.Manager;
+using CARYS_BackOffice.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +14,21 @@ namespace CARYS_BackOffice
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            // Désactivation du bouton création de commande 
+            // si elle existe déjà dans la session
+            if (Session["CommandeFournisseur"] != null)
+            {
+                // Désactivation des commandes de création d'une nouvelle commande
+                DisableFormCommande();
+            }
+        }
 
+        private void DisableFormCommande()
+        {
+            // Désactivation du bouton de création d'une nouvelle commande
+            BtnNouvelleCommande.Enabled = false;
+            // Désactivation de la dropdown de sélection du fournisseur
+            DropDownListFournisseur.Enabled = false;
         }
 
         /// <summary>
@@ -39,8 +55,8 @@ namespace CARYS_BackOffice
         /// <param name="e"></param>
         protected void DropDownListFournisseur_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Mise à jour de la liste des articles associés au fournisseur sélectionné
-            DropDownListArticle.DataBind();
+            // Mise à jour de la grille contenant les articles
+            GridViewArticle.DataBind();
         }
 
         /// <summary>
@@ -50,14 +66,25 @@ namespace CARYS_BackOffice
         /// <param name="e"></param>
         protected void BtnNouvelleCommandeFournisseur_Click(object sender, EventArgs e)
         {
-            // Récupération de l'id du fournisseur sélectionné
-            int id = int.Parse(DropDownListFournisseur.SelectedValue);
-            // Récupération du numero de la nouvelle commande
-            int idCommande = CommandeFournisseurManager.CreateCommandeFournisseur(Context, id);
-            HiddenNumeroCommande.Value = idCommande.ToString();
-            // Mise à jour des données
-            GridViewCommande.DataSource = CommandeFournisseurManager.GetArticlesCommandeAtCommandeFournisseur(idCommande);
-            GridViewCommande.DataBind();
+            //// Récupération de l'id du fournisseur sélectionné
+            //int id = int.Parse(DropDownListFournisseur.SelectedValue);
+            //// Récupération du numero de la nouvelle commande
+            //int idCommande = CommandeFournisseurManager.CreateCommandeFournisseur(Context, id);
+            //HiddenNumeroCommande.Value = idCommande.ToString();
+            //// Mise à jour des données
+            //GridViewCommande.DataSource = CommandeFournisseurManager.GetArticlesCommandeAtCommandeFournisseur(idCommande);
+            //GridViewCommande.DataBind();
+
+            // Création de la commande dans la session si elle n'existe pas
+            if (Session["CommandeFournisseur"] == null)
+            {
+                Session.Add("CommandeFournisseur", new List<ArticlesCommandeFournisseur>());
+                GridViewCommande.DataSource = Session["CommandeFournisseur"];
+                GridViewCommande.DataBind();
+            }
+
+            // Désactivation des commandes de création d'une nouvelle commande
+            DisableFormCommande();
         }
 
         /// <summary>
@@ -67,18 +94,43 @@ namespace CARYS_BackOffice
         /// <param name="e"></param>
         protected void BtnAddArticle_Click(object sender, EventArgs e)
         {
-            int idCommande = 0;
+            //int idCommande = 0;
 
-            if (int.TryParse(HiddenNumeroCommande.Value, out idCommande))
+            //if (int.TryParse(HiddenNumeroCommande.Value, out idCommande))
+            //{
+            //    int quantite = 0;
+            //    if (int.TryParse(TextQuantite.Text, out quantite))
+            //    {
+            //        CommandeFournisseurManager.AddArticleCommandeFournisseur(Context, idCommande, quantite, int.Parse(DropDownListArticle.SelectedValue));
+            //        GridViewCommande.DataSource = CommandeFournisseurManager.GetArticlesCommandeAtCommandeFournisseur(idCommande);
+            //        GridViewCommande.DataBind();
+            //    }
+            //}
+
+            // Vérification de la référence de l'article
+            int reference = 0;
+            int quantite = 0;
+            if (!int.TryParse(TextQuantite.Text, out reference))
             {
-                int quantite = 0;
-                if (int.TryParse(TextQuantite.Text, out quantite))
-                {
-                    CommandeFournisseurManager.AddArticleCommandeFournisseur(Context, idCommande, quantite, int.Parse(DropDownListArticle.SelectedValue));
-                    GridViewCommande.DataSource = CommandeFournisseurManager.GetArticlesCommandeAtCommandeFournisseur(idCommande);
-                    GridViewCommande.DataBind();
-                }
+                Context.Response.Write("Quantité saisie incorrect !");
             }
+            // Vérification de la quantité
+            else if (!int.TryParse(TextQuantite.Text, out quantite))
+            {
+                Context.Response.Write("Quantité saisie incorrect !");
+            }
+            else if (quantite <= 0)
+            {
+                Context.Response.Write("La quantité doit être supérieur 0 !");
+            }
+            else
+            {
+                //((List<ArticlesCommandeFournisseur>)Session["CommandeFournisseur"]).Add( ));
+            }
+        }
+
+        protected void GridViewArticle_SelectedIndexChanged(object sender, EventArgs e)
+        {
 
         }
     }

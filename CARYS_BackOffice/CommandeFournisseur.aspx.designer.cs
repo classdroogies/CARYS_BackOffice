@@ -31,31 +31,13 @@ namespace CARYS_BackOffice {
         protected global::System.Web.UI.WebControls.DropDownList DropDownListFournisseur;
         
         /// <summary>
-        /// Contrôle BtnValiderFournisseur.
+        /// Contrôle BtnNouvelleCommande.
         /// </summary>
         /// <remarks>
         /// Champ généré automatiquement.
         /// Pour modifier, déplacez la déclaration de champ du fichier de concepteur dans le fichier code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BtnValiderFournisseur;
-        
-        /// <summary>
-        /// Contrôle EdsArticle.
-        /// </summary>
-        /// <remarks>
-        /// Champ généré automatiquement.
-        /// Pour modifier, déplacez la déclaration de champ du fichier de concepteur dans le fichier code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.EntityDataSource EdsArticle;
-        
-        /// <summary>
-        /// Contrôle DropDownListArticle.
-        /// </summary>
-        /// <remarks>
-        /// Champ généré automatiquement.
-        /// Pour modifier, déplacez la déclaration de champ du fichier de concepteur dans le fichier code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DropDownListArticle;
+        protected global::System.Web.UI.WebControls.Button BtnNouvelleCommande;
         
         /// <summary>
         /// Contrôle TextQuantite.
@@ -74,6 +56,15 @@ namespace CARYS_BackOffice {
         /// Pour modifier, déplacez la déclaration de champ du fichier de concepteur dans le fichier code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button BtnAddArticle;
+        
+        /// <summary>
+        /// Contrôle GridViewArticle.
+        /// </summary>
+        /// <remarks>
+        /// Champ généré automatiquement.
+        /// Pour modifier, déplacez la déclaration de champ du fichier de concepteur dans le fichier code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView GridViewArticle;
         
         /// <summary>
         /// Contrôle HiddenNumeroCommande.

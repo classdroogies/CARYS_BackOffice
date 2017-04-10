@@ -1,11 +1,11 @@
-﻿
+﻿using CARYS_BackOffice.App_Code.Entity;
 using CARYS_BackOffice.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace CARYS_BackOffice
+namespace CARYS_BackOffice.App_Code.Manager
 {
     public class CommandeFournisseurManager
     {
@@ -29,13 +29,17 @@ namespace CARYS_BackOffice
             IEnumerable<ArticlesCommandeFournisseur> liste = from article in _bdd.Articles
                                                              join ligneCommande in _bdd.LigneCommandeFournisseurs on article.Reference
                                                              equals ligneCommande.Reference
+                                                             join stock in _bdd.StockArticles on article.Reference
+                                                             equals stock.Reference
                                                              where ligneCommande.NumeroCommandeFournisseur == idCommandeFournisseur
                                                              select new ArticlesCommandeFournisseur
                                                              {
                                                                  NumeroCommandeFournisseur = ligneCommande.NumeroCommandeFournisseur,
                                                                  LibelleArticle = article.LibelleArticle,
                                                                  PrixFournisseur = (double)article.PrixAchat,
-                                                                 QuantiteCommmandeFournisseur = ligneCommande.QuantiteCommandeFournisseur
+                                                                 QuantiteCommmandeFournisseur = ligneCommande.QuantiteCommandeFournisseur,
+                                                                 QuantiteStock = stock.Quantite,
+                                                                 SeuilStock = (int)stock.Seuil
                                                              };
             return liste.ToList();
         }
@@ -49,19 +53,17 @@ namespace CARYS_BackOffice
             int idNewCommande = 0;
             try
             {
-                // Création de la commande
-                Models.CommandeFournisseur commande = new Models.CommandeFournisseur();
-                commande.DateCommandeFournisseur = DateTime.Now;
-                commande.IdFournisseur = idCommandeFournisseur;
-                // Ajout de la commande à l'entité de la base
-                _bdd.CommandeFournisseurs.Add(commande);
-                // Mise à jour de la base
-                _bdd.SaveChanges();
-                // Mise à jour de l'id de la nouvelle commande
-                idNewCommande = _bdd.CommandeFournisseurs.Select(c => c.NumeroCommandeFournisseur).OrderByDescending(p => p).FirstOrDefault();
+                //// Création de la commande
+                //Models.CommandeFournisseur commande = new Models.CommandeFournisseur();
+                //commande.DateCommandeFournisseur = DateTime.Now;
+                //commande.IdFournisseur = idCommandeFournisseur;
+                //// Ajout de la commande à l'entité de la base
+                //_bdd.CommandeFournisseurs.Add(commande);
+                //// Mise à jour de la base
+                //_bdd.SaveChanges();
+                //// Mise à jour de l'id de la nouvelle commande
+                //idNewCommande = _bdd.CommandeFournisseurs.Select(c => c.NumeroCommandeFournisseur).OrderByDescending(p => p).FirstOrDefault();
 
-                // Création de la commande dans la session
-                context.Session.Add("CommandeFournisseur", new List<ArticlesCommandeFournisseur>());
             }
             catch (Exception)
             {

@@ -17,22 +17,28 @@
             </div>
         </div>
         <div class="col-lg-6">
-            <asp:Button ID="BtnValiderFournisseur" CssClass="btn btn-primary btn-block" runat="server" Text="Nouvelle commande" OnClick="BtnNouvelleCommandeFournisseur_Click" />
+            <asp:Button ID="BtnNouvelleCommande" CssClass="btn btn-primary btn-block" runat="server" Text="Nouvelle commande" OnClick="BtnNouvelleCommandeFournisseur_Click" />
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-4">
-            <asp:EntityDataSource ID="EdsArticle" runat="server" ConnectionString="name=BddEntities" DefaultContainerName="BddEntities" EnableFlattening="False" EntitySetName="Articles" EntityTypeFilter="Article" OnQueryCreated="EdsArticle_QueryCreated"></asp:EntityDataSource>
-            <label for="DropDownListArticle">Choix article : </label>
-            <asp:DropDownList ID="DropDownListArticle" CssClass="form-control" runat="server" DataSourceID="EdsArticle" DataTextField="LibelleArticle" DataValueField="Reference"></asp:DropDownList>
-        </div>
-        <div class="col-lg-2">
+        <div class="col-lg-6">
             <label for="TextQuantite">Quantite : </label>
             <asp:TextBox ID="TextQuantite" CssClass="form-control" runat="server"></asp:TextBox>
         </div>
         <div class="col-lg-6">
             <asp:Button ID="BtnAddArticle" CssClass="btn btn-primary btn-block" runat="server" Text="Ajouter article" OnClick="BtnAddArticle_Click" />
         </div>
+    </div>
+    <br />
+    <div class="row">
+        <asp:GridView ID="GridViewArticle" GridLines="None" CssClass="table table-responsive" runat="server" AutoGenerateColumns="true" OnSelectedIndexChanged="GridViewArticle_SelectedIndexChanged">
+            <%--<Columns>
+                <asp:BoundField DataField="Reference" HeaderText="Ref"></asp:BoundField>
+                <asp:BoundField DataField="LibelleArticle" HeaderText="Libell&#233;"></asp:BoundField>
+                <asp:BoundField DataField="PrixAchat" HeaderText="Prix"></asp:BoundField>
+                <asp:CommandField ShowSelectButton="True" HeaderText="Action"></asp:CommandField>
+            </Columns>--%>
+        </asp:GridView>
     </div>
     <br />
     <div class="row">

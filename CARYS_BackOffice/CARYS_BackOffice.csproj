@@ -124,8 +124,8 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ArticlesCommandeFournisseur.cs" />
-    <Compile Include="CommandeFournisseurManager.cs" />
+    <Compile Include="App_Code\Entity\ArticlesCommandeFournisseur.cs" />
+    <Compile Include="App_Code\Manager\CommandeFournisseurManager.cs" />
     <Compile Include="CommandeFournisseur.aspx.cs">
       <DependentUpon>CommandeFournisseur.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -219,8 +219,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Code\Entity\" />
-    <Folder Include="App_Code\Manager\" />
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
