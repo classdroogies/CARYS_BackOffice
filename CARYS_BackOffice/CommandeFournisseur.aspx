@@ -13,7 +13,8 @@
             <div class="form-group">
                 <asp:EntityDataSource ID="EdsFournisseur" runat="server" ConnectionString="name=BddEntities" DefaultContainerName="BddEntities" EnableFlattening="False" EntitySetName="Fournisseurs"></asp:EntityDataSource>
                 <label for="DropDownListFournisseur">Choix du fournisseur : </label>
-                <asp:DropDownList ID="DropDownListFournisseur" CssClass="form-control" runat="server" DataSourceID="EdsFournisseur" DataTextField="NomFournisseur" DataValueField="IdFournisseur" OnSelectedIndexChanged="DropDownListFournisseur_SelectedIndexChanged" AutoPostBack="True"></asp:DropDownList>
+                <asp:DropDownList ID="DropDownListFournisseur" CssClass="form-control" runat="server" DataSourceID="EdsFournisseur" DataTextField="NomFournisseur" DataValueField="IdFournisseur" OnSelectedIndexChanged="DropDownListFournisseur_SelectedIndexChanged" AutoPostBack="True">
+                </asp:DropDownList>
             </div>
         </div>
         <div class="col-lg-6">

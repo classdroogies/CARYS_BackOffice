@@ -21,6 +21,9 @@ namespace CARYS_BackOffice
                 // Désactivation des commandes de création d'une nouvelle commande
                 DisableFormCommande();
             }
+
+            System.Diagnostics.Debug.WriteLine(CatalogueFournisseur.GetArticlesFournisseur(1).Count);
+
         }
 
         private void DisableFormCommande()
@@ -55,7 +58,11 @@ namespace CARYS_BackOffice
         /// <param name="e"></param>
         protected void DropDownListFournisseur_SelectedIndexChanged(object sender, EventArgs e)
         {
+            // Récupération de l'id du fournisseur
+            int id = int.Parse(DropDownListFournisseur.SelectedValue);
+
             // Mise à jour de la grille contenant les articles
+            GridViewArticle.DataSource = CatalogueFournisseur.GetArticlesFournisseur(id);
             GridViewArticle.DataBind();
         }
 
@@ -78,7 +85,7 @@ namespace CARYS_BackOffice
             // Création de la commande dans la session si elle n'existe pas
             if (Session["CommandeFournisseur"] == null)
             {
-                Session.Add("CommandeFournisseur", new List<ArticlesCommandeFournisseur>());
+                Session.Add("CommandeFournisseur", new List<ArticleCommandeFournisseur>());
                 GridViewCommande.DataSource = Session["CommandeFournisseur"];
                 GridViewCommande.DataBind();
             }

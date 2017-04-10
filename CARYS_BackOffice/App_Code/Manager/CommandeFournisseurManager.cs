@@ -9,7 +9,7 @@ namespace CARYS_BackOffice.App_Code.Manager
 {
     public class CommandeFournisseurManager
     {
-        // Récupération de l'entité de la base
+        // On instancie la base
         private static BddEntities _bdd = new BddEntities();
 
         /// <summary>
@@ -24,22 +24,20 @@ namespace CARYS_BackOffice.App_Code.Manager
         /// </summary>
         /// <param name="idCommandeFournisseur">l'id du fournisseur pour qui l'on veut récupérer ses commandes</param>
         /// <returns>la liste des commandes passées au fournisseur</returns>
-        public static List<ArticlesCommandeFournisseur> GetArticlesCommandeAtCommandeFournisseur(int idCommandeFournisseur)
+        public static List<ArticleCommandeFournisseur> GetArticlesCommandeAtCommandeFournisseur(int idCommandeFournisseur)
         {
-            IEnumerable<ArticlesCommandeFournisseur> liste = from article in _bdd.Articles
+            IEnumerable<ArticleCommandeFournisseur> liste = from article in _bdd.Articles
                                                              join ligneCommande in _bdd.LigneCommandeFournisseurs on article.Reference
                                                              equals ligneCommande.Reference
                                                              join stock in _bdd.StockArticles on article.Reference
                                                              equals stock.Reference
                                                              where ligneCommande.NumeroCommandeFournisseur == idCommandeFournisseur
-                                                             select new ArticlesCommandeFournisseur
+                                                             select new ArticleCommandeFournisseur
                                                              {
                                                                  NumeroCommandeFournisseur = ligneCommande.NumeroCommandeFournisseur,
                                                                  LibelleArticle = article.LibelleArticle,
                                                                  PrixFournisseur = (double)article.PrixAchat,
-                                                                 QuantiteCommmandeFournisseur = ligneCommande.QuantiteCommandeFournisseur,
-                                                                 QuantiteStock = stock.Quantite,
-                                                                 SeuilStock = (int)stock.Seuil
+                                                                 QuantiteCommmandeFournisseur = ligneCommande.QuantiteCommandeFournisseur
                                                              };
             return liste.ToList();
         }
