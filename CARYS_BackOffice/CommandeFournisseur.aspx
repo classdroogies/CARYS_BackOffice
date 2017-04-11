@@ -24,23 +24,7 @@
     </div>
     <br />
     <div class="row">
-        <div class="col-lg-8">
-            <asp:GridView ID="GridViewArticle" GridLines="None" CssClass="table table-responsive" runat="server" AutoGenerateColumns="false">
-                <Columns>
-                    <asp:BoundField DataField="Reference" Visible="false" HeaderText="Ref"></asp:BoundField>
-                    <asp:BoundField DataField="LibelleArticle" HeaderText="Libell&#233;"></asp:BoundField>
-                    <asp:BoundField DataField="PrixFournisseur" HeaderText="Prix"></asp:BoundField>
-                    <asp:BoundField DataField="QuantiteStock" HeaderText="Qté en stock"></asp:BoundField>
-                    <asp:BoundField DataField="SeuilStock" HeaderText="Seuil"></asp:BoundField>
-                    <asp:ButtonField Text="Ajouter &#224; la commande" ButtonType="Button">
-                        <ControlStyle CssClass="btn btn-primary btn-block"></ControlStyle>
-                    </asp:ButtonField>
-                </Columns>
-            </asp:GridView>
-        </div>
-        <div class="col-lg-4">
-            <asp:GridView ID="GridViewCommande" CssClass="table table-responsive" GridLines="None" runat="server"></asp:GridView>
-        </div>
+        <asp:GridView ID="GridViewCommande" CssClass="table table-responsive" GridLines="None" runat="server"></asp:GridView>
     </div>
     <div class="row">
         <asp:ListView ID="ListViewArticles" GroupItemCount="4" runat="server">
@@ -57,9 +41,11 @@
                     <h3>
                         <asp:Label ID="LblLibelle" Text='<%# Eval("LibelleArticle") %>' runat="server" />
                     </h3>
-                    <p><strong>Prix : </strong>
+                    <p>
+                        <strong>Prix : </strong>
                         <asp:Label ID="LblPrix" Text='<%# Eval("PrixFournisseur") %>' runat="server" />
-                         &euro; HT</p>
+                        &euro; HT
+                    </p>
                     <p><strong>Quantité en stock : </strong><%# Eval("QuantiteStock") %></p>
                     <p><strong>Seuil : </strong><%# Eval("SeuilStock") %></p>
                     <div class="row">

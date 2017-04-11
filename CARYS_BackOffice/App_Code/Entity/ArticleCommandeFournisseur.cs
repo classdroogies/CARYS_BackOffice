@@ -19,6 +19,19 @@ namespace CARYS_BackOffice.App_Code.Entity
         // Le prix fournisseur de l'article
         public double PrixFournisseur { get; set; }
         // Le quantité d'article commandé
-        public int QuantiteCommmandeFournisseur { get; set; }
+        public int QuantiteCommandeFournisseur { get; set; }
+
+
+        public ArticleCommandeFournisseur()
+        {
+        }
+
+        public ArticleCommandeFournisseur(int reference, string libelleArticle, double prixFournisseur, int quantite)
+        {
+            this.Reference = reference;
+            this.LibelleArticle = libelleArticle;
+            this.PrixFournisseur = prixFournisseur;
+            this.QuantiteCommandeFournisseur = quantite;
+        }
     }
 }

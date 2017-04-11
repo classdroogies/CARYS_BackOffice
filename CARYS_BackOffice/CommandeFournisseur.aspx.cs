@@ -25,9 +25,7 @@ namespace CARYS_BackOffice
             if (!IsPostBack)
             {
                 // Chargement de la liste de tous les articles fournisseurs
-                GridViewArticle.DataSource = CatalogueFournisseur.GetArticles();
                 ListViewArticles.DataSource = CatalogueFournisseur.GetArticles();
-                GridViewArticle.DataBind();
                 ListViewArticles.DataBind();
             }
         }
@@ -72,16 +70,13 @@ namespace CARYS_BackOffice
             // Si un fournisseur est sélectionné on met à jour la grille
             if (id > 0)
             {
-                GridViewArticle.DataSource = CatalogueFournisseur.GetArticlesFournisseur(id);
                 ListViewArticles.DataSource = CatalogueFournisseur.GetArticlesFournisseur(id);
             }
             else
             {
-                GridViewArticle.DataSource = CatalogueFournisseur.GetArticles();
                 ListViewArticles.DataSource = CatalogueFournisseur.GetArticles();
             }
             // Mise à jour de la grille contenant les articles
-            GridViewArticle.DataBind();
             ListViewArticles.DataBind();
         }
 
@@ -92,15 +87,6 @@ namespace CARYS_BackOffice
         /// <param name="e"></param>
         protected void BtnNouvelleCommandeFournisseur_Click(object sender, EventArgs e)
         {
-            //// Récupération de l'id du fournisseur sélectionné
-            //int id = int.Parse(DropDownListFournisseur.SelectedValue);
-            //// Récupération du numero de la nouvelle commande
-            //int idCommande = CommandeFournisseurManager.CreateCommandeFournisseur(Context, id);
-            //HiddenNumeroCommande.Value = idCommande.ToString();
-            //// Mise à jour des données
-            //GridViewCommande.DataSource = CommandeFournisseurManager.GetArticlesCommandeAtCommandeFournisseur(idCommande);
-            //GridViewCommande.DataBind();
-
             // Création de la commande dans la session si elle n'existe pas
             if (Session["CommandeFournisseur"] == null)
             {
@@ -120,21 +106,6 @@ namespace CARYS_BackOffice
         /// <param name="e"></param>
         protected void BtnAddArticle_Click(object sender, EventArgs e)
         {
-            //int idCommande = 0;
-
-            //if (int.TryParse(HiddenNumeroCommande.Value, out idCommande))
-            //{
-            //    int quantite = 0;
-            //    if (int.TryParse(TextQuantite.Text, out quantite))
-            //    {
-            //        CommandeFournisseurManager.AddArticleCommandeFournisseur(Context, idCommande, quantite, int.Parse(DropDownListArticle.SelectedValue));
-            //        GridViewCommande.DataSource = CommandeFournisseurManager.GetArticlesCommandeAtCommandeFournisseur(idCommande);
-            //        GridViewCommande.DataBind();
-            //    }
-            //}
-
-
-
             // Récupération de l'item sélectionné
             ListViewItem item = ((LinkButton)sender).NamingContainer as ListViewItem;
             //Récupération des données
@@ -142,30 +113,29 @@ namespace CARYS_BackOffice
             Label lblPrix = (Label)item.FindControl("LblPrix");
             TextBox txtQuantite = (TextBox)item.FindControl("TxtQuantite");
 
-            Response.Write(((LinkButton)sender).CommandArgument + " : " + lblLibelle.Text + " = " + lblPrix.Text);
+            int reference = 0;
+            int quantite = 0;
 
-
-            //// Vérification de la référence de l'article
-            //int reference = 0;
-            //int quantite = 0;
-
-            //if (!int.TryParse(TextQuantite.Text, out reference))
-            //{
-            //    Context.Response.Write("Quantité saisie incorrect !");
-            //}
-            //// Vérification de la quantité
-            //else if (!int.TryParse(TextQuantite.Text, out quantite))
-            //{
-            //    Context.Response.Write("Quantité saisie incorrect !");
-            //}
-            //else if (quantite <= 0)
-            //{
-            //    Context.Response.Write("La quantité doit être supérieur 0 !");
-            //}
-            //else
-            //{
-            //    //((List<ArticlesCommandeFournisseur>)Session["CommandeFournisseur"]).Add( ));
-            //}
+            // Vérification de la référence de l'article
+            if (!int.TryParse(((LinkButton)sender).CommandArgument, out reference))
+            {
+                Response.Write("Quantité saisie incorrect !");
+            }
+            // Vérification de la quantité
+            else if (!int.TryParse(txtQuantite.Text, out quantite))
+            {
+                Response.Write("Quantité saisie incorrect !");
+            }
+            else if (quantite <= 0)
+            {
+                Response.Write("La quantité doit être supérieur 0 !");
+            }
+            else
+            {
+                ((List<ArticleCommandeFournisseur>)Session["CommandeFournisseur"]).Add(new ArticleCommandeFournisseur(reference, lblLibelle.Text, double.Parse(lblPrix.Text), quantite));
+                GridViewCommande.DataSource = Session["CommandeFournisseur"];
+                GridViewCommande.DataBind();
+            }
         }
     }
 }

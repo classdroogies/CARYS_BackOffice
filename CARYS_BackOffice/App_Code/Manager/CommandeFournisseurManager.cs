@@ -37,7 +37,7 @@ namespace CARYS_BackOffice.App_Code.Manager
                                                                  NumeroCommandeFournisseur = ligneCommande.NumeroCommandeFournisseur,
                                                                  LibelleArticle = article.LibelleArticle,
                                                                  PrixFournisseur = (double)article.PrixAchat,
-                                                                 QuantiteCommmandeFournisseur = ligneCommande.QuantiteCommandeFournisseur
+                                                                 QuantiteCommandeFournisseur = ligneCommande.QuantiteCommandeFournisseur
                                                              };
             return liste.ToList();
         }
