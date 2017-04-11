@@ -17,7 +17,7 @@ namespace CARYS_BackOffice.Models
         public int IdStock { get; set; }
         public int Quantite { get; set; }
         public int QuantiteReserve { get; set; }
-        public Nullable<int> Seuil { get; set; }
+        public int Seuil { get; set; }
         public int Reference { get; set; }
     
         public virtual Article Article { get; set; }

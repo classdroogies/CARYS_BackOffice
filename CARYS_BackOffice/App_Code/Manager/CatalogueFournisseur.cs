@@ -29,18 +29,54 @@ namespace CARYS_BackOffice.App_Code.Manager
         /// <returns>la liste des articles</returns>
         public static List<ArticleFournisseur> GetArticlesFournisseur(int idFournisseur)
         {
+            IEnumerable<ArticleFournisseur> liste;
+            try
+            {
+                liste = from article in _bdd.Articles
+                        join stock in _bdd.StockArticles on article.Reference equals stock.Reference 
+                        where article.IdFournisseur == idFournisseur
+                        select new ArticleFournisseur
+                        {
+                            Reference = article.Reference,
+                            LibelleArticle = article.LibelleArticle,
+                            PrixFournisseur = article.PrixAchat.Value ,
+                            SeuilStock = stock.Seuil,
+                            QuantiteStock = stock.Quantite
+                        };
+            }
+            catch (Exception)
+            {
 
-            IEnumerable<ArticleFournisseur> liste = from article in _bdd.Articles
-                                                    join stock in _bdd.StockArticles on article.Reference equals stock.Reference
-                                                    select new ArticleFournisseur
-                                                    {
-                                                        Reference = article.Reference,
-                                                        LibelleArticle = article.LibelleArticle,
-                                                        PrixFournisseur = (double)article.PrixAchat,
-                                                        SeuilStock = 0,
-                                                        QuantiteStock = 0
-                                                    };
+                throw;
+            }
+            return liste.ToList();
+        }
 
+        /// <summary>
+        /// Méthode qui retourne la liste des articles de tous les fournisseurs
+        /// </summary>
+        /// <returns>La liste de tous les articles</returns>
+        public static List<ArticleFournisseur> GetArticles()
+        {
+            IEnumerable<ArticleFournisseur> liste;
+            try
+            {
+                liste = from article in _bdd.Articles
+                        join stock in _bdd.StockArticles on article.Reference equals stock.Reference
+                        select new ArticleFournisseur
+                        {
+                            Reference = article.Reference,
+                            LibelleArticle = article.LibelleArticle,
+                            PrixFournisseur = article.PrixAchat.Value,
+                            SeuilStock = stock.Seuil,
+                            QuantiteStock = stock.Quantite
+                        };
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
             return liste.ToList();
         }
     }

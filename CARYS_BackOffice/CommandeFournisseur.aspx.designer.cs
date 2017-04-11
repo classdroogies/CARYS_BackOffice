@@ -40,24 +40,6 @@ namespace CARYS_BackOffice {
         protected global::System.Web.UI.WebControls.Button BtnNouvelleCommande;
         
         /// <summary>
-        /// Contrôle TextQuantite.
-        /// </summary>
-        /// <remarks>
-        /// Champ généré automatiquement.
-        /// Pour modifier, déplacez la déclaration de champ du fichier de concepteur dans le fichier code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextQuantite;
-        
-        /// <summary>
-        /// Contrôle BtnAddArticle.
-        /// </summary>
-        /// <remarks>
-        /// Champ généré automatiquement.
-        /// Pour modifier, déplacez la déclaration de champ du fichier de concepteur dans le fichier code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BtnAddArticle;
-        
-        /// <summary>
         /// Contrôle GridViewArticle.
         /// </summary>
         /// <remarks>
@@ -67,15 +49,6 @@ namespace CARYS_BackOffice {
         protected global::System.Web.UI.WebControls.GridView GridViewArticle;
         
         /// <summary>
-        /// Contrôle HiddenNumeroCommande.
-        /// </summary>
-        /// <remarks>
-        /// Champ généré automatiquement.
-        /// Pour modifier, déplacez la déclaration de champ du fichier de concepteur dans le fichier code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField HiddenNumeroCommande;
-        
-        /// <summary>
         /// Contrôle GridViewCommande.
         /// </summary>
         /// <remarks>
@@ -83,5 +56,14 @@ namespace CARYS_BackOffice {
         /// Pour modifier, déplacez la déclaration de champ du fichier de concepteur dans le fichier code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView GridViewCommande;
+        
+        /// <summary>
+        /// Contrôle ListViewArticles.
+        /// </summary>
+        /// <remarks>
+        /// Champ généré automatiquement.
+        /// Pour modifier, déplacez la déclaration de champ du fichier de concepteur dans le fichier code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListView ListViewArticles;
     }
 }

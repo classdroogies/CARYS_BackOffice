@@ -177,7 +177,7 @@
           <Property Name="IdStock" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Quantite" Type="int" Nullable="false" />
           <Property Name="QuantiteReserve" Type="int" Nullable="false" />
-          <Property Name="Seuil" Type="int" />
+          <Property Name="Seuil" Type="int" Nullable="false" />
           <Property Name="Reference" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK_Acteur_IdRoleActeur">
@@ -698,7 +698,7 @@
           <Property Name="IdStock" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Quantite" Type="Int32" Nullable="false" />
           <Property Name="QuantiteReserve" Type="Int32" Nullable="false" />
-          <Property Name="Seuil" Type="Int32" />
+          <Property Name="Seuil" Type="Int32" Nullable="false" />
           <Property Name="Reference" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Article" Relationship="Self.FK_StockArticle_Reference" FromRole="StockArticle" ToRole="Article" />
         </EntityType>
