@@ -31,6 +31,15 @@ namespace CARYS_BackOffice {
         protected global::System.Web.UI.WebControls.DropDownList DropDownListFournisseur;
         
         /// <summary>
+        /// Contrôle BtnAnnulerCommande.
+        /// </summary>
+        /// <remarks>
+        /// Champ généré automatiquement.
+        /// Pour modifier, déplacez la déclaration de champ du fichier de concepteur dans le fichier code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BtnAnnulerCommande;
+        
+        /// <summary>
         /// Contrôle BtnNouvelleCommande.
         /// </summary>
         /// <remarks>

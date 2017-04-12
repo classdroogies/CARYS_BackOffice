@@ -34,7 +34,6 @@ namespace CARYS_BackOffice.App_Code.Manager
                                                              where ligneCommande.NumeroCommandeFournisseur == idCommandeFournisseur
                                                              select new ArticleCommandeFournisseur
                                                              {
-                                                                 NumeroCommandeFournisseur = ligneCommande.NumeroCommandeFournisseur,
                                                                  LibelleArticle = article.LibelleArticle,
                                                                  PrixFournisseur = (double)article.PrixAchat,
                                                                  QuantiteCommandeFournisseur = ligneCommande.QuantiteCommandeFournisseur

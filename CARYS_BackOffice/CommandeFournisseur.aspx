@@ -19,6 +19,7 @@
             </div>
         </div>
         <div class="col-lg-6">
+            <asp:Button ID="BtnAnnulerCommande" CssClass="btn btn-danger btn-block" runat="server" Text="Annuler commande" Visible="false" OnClick="BtnAnnulerCommande_Click" />
             <asp:Button ID="BtnNouvelleCommande" CssClass="btn btn-primary btn-block" runat="server" Text="Nouvelle commande" OnClick="BtnNouvelleCommandeFournisseur_Click" />
         </div>
     </div>
@@ -27,7 +28,7 @@
         <asp:GridView ID="GridViewCommande" CssClass="table table-responsive" GridLines="None" runat="server"></asp:GridView>
     </div>
     <div class="row">
-        <asp:ListView ID="ListViewArticles" GroupItemCount="4" runat="server">
+        <asp:ListView ID="ListViewArticles" GroupItemCount="4" runat="server" OnLoad="ListViewArticles_Load">
             <LayoutTemplate>
                 <div class="row">
                     <asp:PlaceHolder ID="groupPlaceholder" runat="server"></asp:PlaceHolder>

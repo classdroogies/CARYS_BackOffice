@@ -14,19 +14,83 @@ namespace CARYS_BackOffice
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!IsPostBack)
+            {
+                // Chargement de la liste de tous les articles fournisseurs
+                ListViewArticles.DataSource = CatalogueFournisseur.GetArticles();
+                ListViewArticles.DataBind();
+                CommandeExist();
+            }
+        }
+
+        protected void ListViewArticles_Load(object sender, EventArgs e)
+        {
+            CommandeExist();
+        }
+
+        private void CommandeExist()
+        {
             // Désactivation du bouton création de commande 
             // si elle existe déjà dans la session
             if (Session["CommandeFournisseur"] != null)
             {
                 // Désactivation des commandes de création d'une nouvelle commande
                 DisableFormCommande();
+                // Activation des boutons de commande sur les articles
+                EnableFormArticleCommande();
             }
-
-            if (!IsPostBack)
+            else
             {
-                // Chargement de la liste de tous les articles fournisseurs
-                ListViewArticles.DataSource = CatalogueFournisseur.GetArticles();
-                ListViewArticles.DataBind();
+                EnableFormCommande();
+                DisableFormArticleCommande();
+            }
+        }
+
+        /// <summary>
+        /// Méthode qui permet de désactiver tous les boutons et les champs de texte de commande de la liste des articles
+        /// </summary>
+        private void DisableFormArticleCommande()
+        {
+            // Parcours de tous les items de la listview contenant les articles
+            foreach (ListViewDataItem item in ListViewArticles.Items)
+            {
+                // Pour chaque controls d'un item on rend invisible la saisie 
+                // de la quantité et le bouton de commande
+                foreach (Control control in item.Controls)
+                {
+                    if (control.GetType() == typeof(LinkButton))
+                    {
+                        control.Visible = false;
+                    }
+                    else if (control.GetType() == typeof(TextBox))
+                    {
+                        control.Visible = false;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Méthode qui permet de rendre visible tous les boutons et les champs de texte de commande de la liste des articles
+        /// </summary>
+        private void EnableFormArticleCommande()
+        {
+            // Parcours de tous les items de la listview contenant les articles
+            foreach (ListViewDataItem item in ListViewArticles.Items)
+            {
+                // Pour chaque controls d'un item on rend visible la saisie 
+                // de la quantité et le bouton de commande
+                foreach (Control control in item.Controls)
+                {
+                    if (control.GetType() == typeof(LinkButton))
+                    {
+                        control.Visible = true;
+                    }
+                    else if (control.GetType() == typeof(TextBox))
+                    {
+                        control.Visible = true;
+                    }
+                }
             }
         }
 
@@ -36,9 +100,21 @@ namespace CARYS_BackOffice
         private void DisableFormCommande()
         {
             // Désactivation du bouton de création d'une nouvelle commande
-            BtnNouvelleCommande.Enabled = false;
+            BtnNouvelleCommande.Visible = false;
             // Désactivation de la dropdown de sélection du fournisseur
             DropDownListFournisseur.Enabled = false;
+            //Activation du bouton annuler
+            BtnAnnulerCommande.Visible = true;
+        }
+
+        /// <summary>
+        /// Méthode qui permet d'activer les commandes de création d'une nouvelle commande
+        /// </summary>
+        private void EnableFormCommande()
+        {
+            BtnAnnulerCommande.Visible = false;
+            BtnNouvelleCommande.Visible = true;
+            DropDownListFournisseur.Enabled = true;
         }
 
         /// <summary>
@@ -78,25 +154,45 @@ namespace CARYS_BackOffice
             }
             // Mise à jour de la grille contenant les articles
             ListViewArticles.DataBind();
+            CommandeExist();
         }
 
         /// <summary>
-        /// 
+        /// Methode appelée quand l'utilisateur clic sur le bouton nouvelle commmande
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         protected void BtnNouvelleCommandeFournisseur_Click(object sender, EventArgs e)
         {
-            // Création de la commande dans la session si elle n'existe pas
-            if (Session["CommandeFournisseur"] == null)
+            // Création de la commande dans la session si elle n'existe pas 
+            if (Session["CommandeFournisseur"] == null && DropDownListFournisseur.SelectedIndex != 0)
             {
+
                 Session.Add("CommandeFournisseur", new List<ArticleCommandeFournisseur>());
                 GridViewCommande.DataSource = Session["CommandeFournisseur"];
                 GridViewCommande.DataBind();
+                CommandeExist();
             }
+            else
+            {
+                Response.Write("Veuillez choisir un fournisseur.");
+            }
+        }
 
-            // Désactivation des commandes de création d'une nouvelle commande
-            DisableFormCommande();
+        /// <summary>
+        /// Méthode appelée quand l'utilisateur clic sur bouton annuler commande
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void BtnAnnulerCommande_Click(object sender, EventArgs e)
+        {
+            if (Session["CommandeFournisseur"] != null)
+            {
+                Session.Remove("CommandeFournisseur");
+                GridViewCommande.DataSource = null;
+                GridViewCommande.DataBind();
+                CommandeExist();
+            }
         }
 
         /// <summary>
@@ -130,7 +226,7 @@ namespace CARYS_BackOffice
             {
                 Response.Write("La quantité doit être supérieur 0 !");
             }
-            else
+            else if (Session["CommandeFournisseur"] != null)
             {
                 ((List<ArticleCommandeFournisseur>)Session["CommandeFournisseur"]).Add(new ArticleCommandeFournisseur(reference, lblLibelle.Text, double.Parse(lblPrix.Text), quantite));
                 GridViewCommande.DataSource = Session["CommandeFournisseur"];

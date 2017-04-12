@@ -10,8 +10,6 @@ namespace CARYS_BackOffice.App_Code.Entity
     /// </summary>
     public class ArticleCommandeFournisseur
     {
-        // Le numéro de la commmande fournisseur
-        public int NumeroCommandeFournisseur { get; set; }
         // L'id de l'article à commander
         public int Reference { get; set; }
         // Le nom de l'article
