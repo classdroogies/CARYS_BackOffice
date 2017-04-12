@@ -233,5 +233,16 @@ namespace CARYS_BackOffice
                 GridViewCommande.DataBind();
             }
         }
+
+        protected void ListViewArticles_PagePropertiesChanging(object sender, PagePropertiesChangingEventArgs e)
+        {
+            //set current page startindex, max rows and rebind to false
+            DataPager.SetPageProperties(e.StartRowIndex, e.MaximumRows, false);
+
+            // Chargement de la liste de tous les articles fournisseurs
+            ListViewArticles.DataSource = CatalogueFournisseur.GetArticles();
+            ListViewArticles.DataBind();
+            CommandeExist();
+        }
     }
 }

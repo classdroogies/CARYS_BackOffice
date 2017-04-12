@@ -20,5 +20,9 @@ namespace CARYS_BackOffice.App_Code.Entity
         public int QuantiteStock { get; set; }
         // Seuil stock
         public int SeuilStock { get; set; }
+        // Genre 
+        public string LibelleGenre { get; set; }
+        // Categorie
+        public string LibelleCategorie { get; set; }
     }
 }

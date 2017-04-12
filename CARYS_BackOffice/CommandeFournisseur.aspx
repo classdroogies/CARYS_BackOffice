@@ -28,7 +28,7 @@
         <asp:GridView ID="GridViewCommande" CssClass="table table-responsive" GridLines="None" runat="server"></asp:GridView>
     </div>
     <div class="row">
-        <asp:ListView ID="ListViewArticles" GroupItemCount="4" runat="server" OnLoad="ListViewArticles_Load">
+        <asp:ListView ID="ListViewArticles" GroupItemCount="4" runat="server" OnLoad="ListViewArticles_Load" OnPagePropertiesChanging="ListViewArticles_PagePropertiesChanging">
             <LayoutTemplate>
                 <div class="row">
                     <asp:PlaceHolder ID="groupPlaceholder" runat="server"></asp:PlaceHolder>
@@ -38,23 +38,27 @@
                 <asp:PlaceHolder ID="itemPlaceholder" runat="server"></asp:PlaceHolder>
             </GroupTemplate>
             <ItemTemplate>
-                <div class="col-lg-3">
-                    <h3>
-                        <asp:Label ID="LblLibelle" Text='<%# Eval("LibelleArticle") %>' runat="server" />
-                    </h3>
-                    <p>
-                        <strong>Prix : </strong>
-                        <asp:Label ID="LblPrix" Text='<%# Eval("PrixFournisseur") %>' runat="server" />
-                        &euro; HT
-                    </p>
-                    <p><strong>Quantité en stock : </strong><%# Eval("QuantiteStock") %></p>
-                    <p><strong>Seuil : </strong><%# Eval("SeuilStock") %></p>
-                    <div class="row">
-                        <div class="col-lg-5">
-                            <asp:TextBox ID="TxtQuantite" placeholder="Quantité" CssClass="form-control text-center" runat="server"></asp:TextBox>
-                        </div>
-                        <div class="col-lg-7">
-                            <asp:LinkButton OnClick="BtnAddArticle_Click" CommandArgument='<%# Eval("Reference") %>' CommandName="Add" CssClass="btn btn-primary btn-block" runat="server">Commander</span></asp:LinkButton>
+                <div class="col-lg-3 boxArticle">
+                    <div class="article">
+                        <h3>
+                            <asp:Label ID="LblLibelle" Text='<%# Eval("LibelleArticle") %>' runat="server" />
+                        </h3>
+                        <p>
+                            <strong>Prix : </strong>
+                            <asp:Label ID="LblPrix" Text='<%# Eval("PrixFournisseur") %>' runat="server" />
+                            &euro; HT
+                        </p>
+                        <p><strong>Quantité en stock : </strong><%# Eval("QuantiteStock") %></p>
+                        <p><strong>Seuil : </strong><%# Eval("SeuilStock") %></p>
+                        <p><strong>Genre : </strong><%# Eval("LibelleGenre") %></p>
+                        <p><strong>Categorie : </strong><%# Eval("LibelleCategorie") %></p>
+                        <div class="row">
+                            <div class="col-lg-5">
+                                <asp:TextBox ID="TxtQuantite" placeholder="Quantité" CssClass="form-control text-center" runat="server"></asp:TextBox>
+                            </div>
+                            <div class="col-lg-7">
+                                <asp:LinkButton OnClick="BtnAddArticle_Click" CommandArgument='<%# Eval("Reference") %>' CommandName="Add" CssClass="btn btn-primary btn-block" runat="server">Commander</span></asp:LinkButton>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -63,5 +67,12 @@
                 <div>Aucun article</div>
             </EmptyDataTemplate>
         </asp:ListView>
+        <asp:DataPager ID="DataPager" PagedControlID="ListViewArticles" runat="server" PageSize="20">
+            <Fields>
+                <asp:NextPreviousPagerField ButtonType="Button" ButtonCssClass="btn btn-block btn-primary" ShowFirstPageButton="True" ShowNextPageButton="False" ShowPreviousPageButton="False"></asp:NextPreviousPagerField>
+                <asp:NumericPagerField></asp:NumericPagerField>
+                <asp:NextPreviousPagerField ButtonType="Button" ButtonCssClass="btn btn-block btn-primary" ShowLastPageButton="True" ShowNextPageButton="False" ShowPreviousPageButton="False"></asp:NextPreviousPagerField>
+            </Fields>
+        </asp:DataPager>
     </div>
 </asp:Content>

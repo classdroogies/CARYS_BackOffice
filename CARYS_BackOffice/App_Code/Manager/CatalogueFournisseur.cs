@@ -33,7 +33,9 @@ namespace CARYS_BackOffice.App_Code.Manager
             try
             {
                 liste = from article in _bdd.Articles
-                        join stock in _bdd.StockArticles on article.Reference equals stock.Reference 
+                        join stock in _bdd.StockArticles on article.Reference equals stock.Reference
+                        join genre in _bdd.Genres on article.IdGenre equals genre.IdGenre
+                        join categorie in _bdd.Categories on genre.IdCategorie equals categorie.IdCategorie
                         where article.IdFournisseur == idFournisseur
                         select new ArticleFournisseur
                         {
@@ -41,7 +43,9 @@ namespace CARYS_BackOffice.App_Code.Manager
                             LibelleArticle = article.LibelleArticle,
                             PrixFournisseur = article.PrixAchat.Value ,
                             SeuilStock = stock.Seuil,
-                            QuantiteStock = stock.Quantite
+                            QuantiteStock = stock.Quantite,
+                            LibelleGenre = genre.LibelleGenre,
+                            LibelleCategorie = categorie.LibelleCategorie
                         };
             }
             catch (Exception)
@@ -63,13 +67,17 @@ namespace CARYS_BackOffice.App_Code.Manager
             {
                 liste = from article in _bdd.Articles
                         join stock in _bdd.StockArticles on article.Reference equals stock.Reference
+                        join genre in _bdd.Genres on article.IdGenre equals genre.IdGenre
+                        join categorie in _bdd.Categories on genre.IdCategorie equals categorie.IdCategorie
                         select new ArticleFournisseur
                         {
                             Reference = article.Reference,
                             LibelleArticle = article.LibelleArticle,
                             PrixFournisseur = article.PrixAchat.Value,
                             SeuilStock = stock.Seuil,
-                            QuantiteStock = stock.Quantite
+                            QuantiteStock = stock.Quantite,
+                            LibelleGenre = genre.LibelleGenre,
+                            LibelleCategorie = categorie.LibelleCategorie
                         };
             }
             catch (Exception)
