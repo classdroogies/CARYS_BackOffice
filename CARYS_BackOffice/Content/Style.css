@@ -1,4 +1,4 @@
-﻿#MainContent_BtnNouvelleCommande, #MainContent_BtnAddArticle, #MainContent_BtnAnnulerCommande {
+﻿#MainContent_BtnNouvelleCommande, #MainContent_BtnAddArticle, #MainContent_GroupBtnCommande {
     margin-top: 25px;
 }
 
@@ -9,4 +9,13 @@
 .article {
     border: 1px solid grey;
     padding: 4%;
+    height: 280px;
+    position: relative;
+}
+
+.commandeArticle {
+    position: absolute;
+    bottom : 0px;
+    left: 0px;
+    padding : 4%;
 }

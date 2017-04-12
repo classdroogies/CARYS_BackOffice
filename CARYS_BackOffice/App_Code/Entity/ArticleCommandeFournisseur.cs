@@ -8,7 +8,7 @@ namespace CARYS_BackOffice.App_Code.Entity
     /// <summary>
     /// Entitée représentant une ligne de commande passée à un fournisseur
     /// </summary>
-    public class ArticleCommandeFournisseur
+    public class ArticleCommandeFournisseur : IEquatable<ArticleCommandeFournisseur>
     {
         // L'id de l'article à commander
         public int Reference { get; set; }
@@ -30,6 +30,25 @@ namespace CARYS_BackOffice.App_Code.Entity
             this.LibelleArticle = libelleArticle;
             this.PrixFournisseur = prixFournisseur;
             this.QuantiteCommandeFournisseur = quantite;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null) return false;
+            ArticleCommandeFournisseur objAsArticleCommandeFournisseur = obj as ArticleCommandeFournisseur;
+            if (objAsArticleCommandeFournisseur == null) return false;
+            else return Equals(objAsArticleCommandeFournisseur);
+        }
+
+        public override int GetHashCode()
+        {
+            return Reference;
+        }
+
+        public bool Equals(ArticleCommandeFournisseur other)
+        {
+            if (other == null) return false;
+            return (this.Reference.Equals(other.Reference));
         }
     }
 }

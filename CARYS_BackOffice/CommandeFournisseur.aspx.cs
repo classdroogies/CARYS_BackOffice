@@ -104,7 +104,7 @@ namespace CARYS_BackOffice
             // Désactivation de la dropdown de sélection du fournisseur
             DropDownListFournisseur.Enabled = false;
             //Activation du bouton annuler
-            BtnAnnulerCommande.Visible = true;
+            GroupBtnCommande.Visible = true;
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace CARYS_BackOffice
         /// </summary>
         private void EnableFormCommande()
         {
-            BtnAnnulerCommande.Visible = false;
+            GroupBtnCommande.Visible = false;
             BtnNouvelleCommande.Visible = true;
             DropDownListFournisseur.Enabled = true;
         }
@@ -228,9 +228,23 @@ namespace CARYS_BackOffice
             }
             else if (Session["CommandeFournisseur"] != null)
             {
-                ((List<ArticleCommandeFournisseur>)Session["CommandeFournisseur"]).Add(new ArticleCommandeFournisseur(reference, lblLibelle.Text, double.Parse(lblPrix.Text), quantite));
-                GridViewCommande.DataSource = Session["CommandeFournisseur"];
-                GridViewCommande.DataBind();
+                // Récupération du panier
+                List<ArticleCommandeFournisseur> panier = ((List<ArticleCommandeFournisseur>)Session["CommandeFournisseur"]);
+
+                // Si le panier contient déjà l'article
+                if (panier.Contains(new ArticleCommandeFournisseur(reference, lblLibelle.Text, double.Parse(lblPrix.Text), quantite)))
+                {
+                    // on  récupère la ligne de commande
+                    ArticleCommandeFournisseur article = panier.Find(x => x.Reference == reference);
+                    // on ajoute la quantité 
+                    article.QuantiteCommandeFournisseur += quantite;
+                }
+                else
+                {
+                    panier.Add(new ArticleCommandeFournisseur(reference, lblLibelle.Text, double.Parse(lblPrix.Text), quantite));
+                }
+                    GridViewCommande.DataSource = Session["CommandeFournisseur"];
+                    GridViewCommande.DataBind();
             }
         }
 
@@ -243,6 +257,47 @@ namespace CARYS_BackOffice
             ListViewArticles.DataSource = CatalogueFournisseur.GetArticles();
             ListViewArticles.DataBind();
             CommandeExist();
+        }
+
+        protected void BtnValiderCommande_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// Méthode appelée quand l'utilisateur clic sur un lien supprimer du panier
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void GridViewCommande_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        {
+            if (Session["CommandeFournisseur"] != null && e.RowIndex >= 0)
+            {
+                ((List<ArticleCommandeFournisseur>)Session["CommandeFournisseur"]).RemoveAt(e.RowIndex);
+                GridViewCommande.DataSource = Session["CommandeFournisseur"];
+                GridViewCommande.DataBind();
+            }
+        }
+
+        protected void GridViewCommande_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            GridViewCommande.EditIndex = e.NewEditIndex;
+            GridViewCommande.DataSource = Session["CommandeFournisseur"];
+            GridViewCommande.DataBind();
+        }
+
+        protected void GridViewCommande_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            GridViewCommande.EditIndex = -1;
+            GridViewCommande.DataSource = Session["CommandeFournisseur"];
+            GridViewCommande.DataBind();
+        }
+
+        protected void GridViewCommande_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            GridViewCommande.EditIndex = -1;
+            GridViewCommande.DataSource = Session["CommandeFournisseur"];
+            GridViewCommande.DataBind();
         }
     }
 }

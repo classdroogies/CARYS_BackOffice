@@ -31,15 +31,6 @@ namespace CARYS_BackOffice {
         protected global::System.Web.UI.WebControls.DropDownList DropDownListFournisseur;
         
         /// <summary>
-        /// Contrôle BtnAnnulerCommande.
-        /// </summary>
-        /// <remarks>
-        /// Champ généré automatiquement.
-        /// Pour modifier, déplacez la déclaration de champ du fichier de concepteur dans le fichier code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BtnAnnulerCommande;
-        
-        /// <summary>
         /// Contrôle BtnNouvelleCommande.
         /// </summary>
         /// <remarks>
@@ -47,6 +38,33 @@ namespace CARYS_BackOffice {
         /// Pour modifier, déplacez la déclaration de champ du fichier de concepteur dans le fichier code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button BtnNouvelleCommande;
+        
+        /// <summary>
+        /// Contrôle GroupBtnCommande.
+        /// </summary>
+        /// <remarks>
+        /// Champ généré automatiquement.
+        /// Pour modifier, déplacez la déclaration de champ du fichier de concepteur dans le fichier code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl GroupBtnCommande;
+        
+        /// <summary>
+        /// Contrôle BtnValiderCommande.
+        /// </summary>
+        /// <remarks>
+        /// Champ généré automatiquement.
+        /// Pour modifier, déplacez la déclaration de champ du fichier de concepteur dans le fichier code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BtnValiderCommande;
+        
+        /// <summary>
+        /// Contrôle BtnAnnulerCommande.
+        /// </summary>
+        /// <remarks>
+        /// Champ généré automatiquement.
+        /// Pour modifier, déplacez la déclaration de champ du fichier de concepteur dans le fichier code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BtnAnnulerCommande;
         
         /// <summary>
         /// Contrôle GridViewCommande.
