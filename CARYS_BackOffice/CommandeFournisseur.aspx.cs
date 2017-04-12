@@ -186,6 +186,14 @@ namespace CARYS_BackOffice
         /// <param name="e"></param>
         protected void BtnAnnulerCommande_Click(object sender, EventArgs e)
         {
+            ClearCommande();
+        }
+
+        /// <summary>
+        /// Méthode qui permet de vider le panier de commande
+        /// </summary>
+        private void ClearCommande()
+        {
             if (Session["CommandeFournisseur"] != null)
             {
                 Session.Remove("CommandeFournisseur");
@@ -204,7 +212,7 @@ namespace CARYS_BackOffice
         {
             // Récupération de l'item sélectionné
             ListViewItem item = ((LinkButton)sender).NamingContainer as ListViewItem;
-            //Récupération des données
+            //Récupération des controles
             Label lblLibelle = (Label)item.FindControl("LblLibelle");
             Label lblPrix = (Label)item.FindControl("LblPrix");
             TextBox txtQuantite = (TextBox)item.FindControl("TxtQuantite");
@@ -215,16 +223,12 @@ namespace CARYS_BackOffice
             // Vérification de la référence de l'article
             if (!int.TryParse(((LinkButton)sender).CommandArgument, out reference))
             {
-                Response.Write("Quantité saisie incorrect !");
+                Response.Write("Référence article incorrect !");
             }
             // Vérification de la quantité
-            else if (!int.TryParse(txtQuantite.Text, out quantite))
+            else if (!int.TryParse(txtQuantite.Text, out quantite) && quantite <= 0)
             {
-                Response.Write("Quantité saisie incorrect !");
-            }
-            else if (quantite <= 0)
-            {
-                Response.Write("La quantité doit être supérieur 0 !");
+                Response.Write("Quantité saisie incorrect, la valeur doit être un nombre entier supérieur à 0 !");
             }
             else if (Session["CommandeFournisseur"] != null)
             {
@@ -234,20 +238,27 @@ namespace CARYS_BackOffice
                 // Si le panier contient déjà l'article
                 if (panier.Contains(new ArticleCommandeFournisseur(reference, lblLibelle.Text, double.Parse(lblPrix.Text), quantite)))
                 {
-                    // on  récupère la ligne de commande
+                    // On  récupère la ligne de commande
                     ArticleCommandeFournisseur article = panier.Find(x => x.Reference == reference);
-                    // on ajoute la quantité 
+                    // On ajoute la quantité 
                     article.QuantiteCommandeFournisseur += quantite;
                 }
                 else
                 {
+                    // Sinon on créé une nouvelle ligne d'article
                     panier.Add(new ArticleCommandeFournisseur(reference, lblLibelle.Text, double.Parse(lblPrix.Text), quantite));
                 }
+                    // On met à jour la grille
                     GridViewCommande.DataSource = Session["CommandeFournisseur"];
                     GridViewCommande.DataBind();
             }
         }
 
+        /// <summary>
+        /// Méthode appelée quand l'utilisateur utilise la pagination
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void ListViewArticles_PagePropertiesChanging(object sender, PagePropertiesChangingEventArgs e)
         {
             //set current page startindex, max rows and rebind to false
@@ -259,9 +270,23 @@ namespace CARYS_BackOffice
             CommandeExist();
         }
 
+        /// <summary>
+        /// Méthode appelée quand l'utilisateur clic sur la bouton de validation d'un commande
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void BtnValiderCommande_Click(object sender, EventArgs e)
         {
+            List<ArticleCommandeFournisseur> panier = ((List<ArticleCommandeFournisseur>)Session["CommandeFournisseur"]);
 
+            if (Session["CommandeFournisseur"] != null && panier.Count > 0)
+            {
+                if (CommandesFournisseur.SaveCommandeFournisseur(int.Parse(DropDownListFournisseur.SelectedValue), panier))
+                {
+                    Response.Write("La commande à bien à été créée !");
+                    ClearCommande();
+                }
+            }
         }
 
         /// <summary>
@@ -279,23 +304,59 @@ namespace CARYS_BackOffice
             }
         }
 
+        /// <summary>
+        /// Méthode appelée quand l'utilisateur clic sur le lien Modifier du panier pour passer en mode édition
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void GridViewCommande_RowEditing(object sender, GridViewEditEventArgs e)
         {
+            // On met à jour l'index de modification de la ligne de la grille
             GridViewCommande.EditIndex = e.NewEditIndex;
+            // On met à jour la grille
             GridViewCommande.DataSource = Session["CommandeFournisseur"];
             GridViewCommande.DataBind();
         }
 
+        /// <summary>
+        /// Méthode appelée quand l'utilisateur clic sur le lien valider du panier en mode édition
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void GridViewCommande_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
+            // Récupération du controle contenant la quantité
+            TextBox txtQuantite = (TextBox)GridViewCommande.Rows[e.RowIndex].FindControl("TxtQuantiteCommande");
+            // Vérification de la valeur saisie
+            int quantite = 0;
+            if (!int.TryParse(txtQuantite.Text, out quantite) && quantite <= 0)
+            {
+                Response.Write("Quantité saisie incorrect, la valeur doit être un nombre entier supérieur à 0 !");
+            }
+            else
+            {
+                // Récupération du panier
+                List<ArticleCommandeFournisseur> panier = ((List<ArticleCommandeFournisseur>)Session["CommandeFournisseur"]);
+                // On  récupère la ligne de commande
+                ArticleCommandeFournisseur article = panier.Find(x => x.Reference == (int)e.Keys["Reference"]);
+                // On modifie la quantité 
+                article.QuantiteCommandeFournisseur = quantite;
+            }
             GridViewCommande.EditIndex = -1;
             GridViewCommande.DataSource = Session["CommandeFournisseur"];
             GridViewCommande.DataBind();
         }
 
+        /// <summary>
+        /// Méthode appelée quand l'utilisateur clic sur le lien annuler du panier en mode édition
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void GridViewCommande_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
         {
+            // On met à jour l'index de modification à -1 pour aucune ligne en mode édition dans la grille
             GridViewCommande.EditIndex = -1;
+            // On met à jour la grille
             GridViewCommande.DataSource = Session["CommandeFournisseur"];
             GridViewCommande.DataBind();
         }

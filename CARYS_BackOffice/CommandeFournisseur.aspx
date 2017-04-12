@@ -51,6 +51,7 @@
                     </ItemTemplate>
                 </asp:TemplateField>
                 <asp:CommandField ShowEditButton="True"></asp:CommandField>
+                <asp:CommandField ShowDeleteButton="True"></asp:CommandField>
             </Columns>
         </asp:GridView>
     </div>

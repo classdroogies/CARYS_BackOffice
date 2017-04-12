@@ -127,7 +127,7 @@
     <Compile Include="App_Code\Entity\ArticleCommandeFournisseur.cs" />
     <Compile Include="App_Code\Entity\ArticleFournisseur.cs" />
     <Compile Include="App_Code\Manager\CatalogueFournisseur.cs" />
-    <Compile Include="App_Code\Manager\CommandeFournisseurManager.cs" />
+    <Compile Include="App_Code\Manager\CommandesFournisseur.cs" />
     <Compile Include="CommandeFournisseur.aspx.cs">
       <DependentUpon>CommandeFournisseur.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
