@@ -66,7 +66,7 @@ namespace CARYS_BackOffice.App_Code.Manager
             }
             catch (Exception)
             {
-                //throw;
+                throw;
             }
             // Retourne l'id de la nouvelle commande ou 0 si il y a une erreur
             return idNewCommande;
@@ -87,7 +87,6 @@ namespace CARYS_BackOffice.App_Code.Manager
                 {
                     // Création de la nouvelle commande
                     int idNewCommande = CreateCommandeFournisseur(idFournisseur);
-
                     // Si la création de la nouvelle commande c'est bien passée
                     if (idNewCommande > 0)
                     {
@@ -98,6 +97,7 @@ namespace CARYS_BackOffice.App_Code.Manager
                             LigneCommandeFournisseur ligneCommande = new LigneCommandeFournisseur();
                             ligneCommande.NumeroCommandeFournisseur = idNewCommande;
                             ligneCommande.QuantiteCommandeFournisseur = article.QuantiteCommandeFournisseur;
+                            ligneCommande.PrixUnitaireFournisseur = article.PrixFournisseur;
                             ligneCommande.Reference = article.Reference;
                             // Ajout de la ligne de commande à l'entité de la base
                             _bdd.LigneCommandeFournisseurs.Add(ligneCommande);
@@ -117,8 +117,7 @@ namespace CARYS_BackOffice.App_Code.Manager
             }
             catch (Exception)
             {
-
-                //throw;
+                throw;
             }
             return commandeSave;
         }

@@ -13,6 +13,42 @@ namespace CARYS_BackOffice {
     public partial class CommandeFournisseur {
         
         /// <summary>
+        /// Contrôle panier.
+        /// </summary>
+        /// <remarks>
+        /// Champ généré automatiquement.
+        /// Pour modifier, déplacez la déclaration de champ du fichier de concepteur dans le fichier code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl panier;
+        
+        /// <summary>
+        /// Contrôle GridViewCommande.
+        /// </summary>
+        /// <remarks>
+        /// Champ généré automatiquement.
+        /// Pour modifier, déplacez la déclaration de champ du fichier de concepteur dans le fichier code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView GridViewCommande;
+        
+        /// <summary>
+        /// Contrôle LblSuccess.
+        /// </summary>
+        /// <remarks>
+        /// Champ généré automatiquement.
+        /// Pour modifier, déplacez la déclaration de champ du fichier de concepteur dans le fichier code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LblSuccess;
+        
+        /// <summary>
+        /// Contrôle LblError.
+        /// </summary>
+        /// <remarks>
+        /// Champ généré automatiquement.
+        /// Pour modifier, déplacez la déclaration de champ du fichier de concepteur dans le fichier code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LblError;
+        
+        /// <summary>
         /// Contrôle EdsFournisseur.
         /// </summary>
         /// <remarks>
@@ -65,15 +101,6 @@ namespace CARYS_BackOffice {
         /// Pour modifier, déplacez la déclaration de champ du fichier de concepteur dans le fichier code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button BtnAnnulerCommande;
-        
-        /// <summary>
-        /// Contrôle GridViewCommande.
-        /// </summary>
-        /// <remarks>
-        /// Champ généré automatiquement.
-        /// Pour modifier, déplacez la déclaration de champ du fichier de concepteur dans le fichier code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView GridViewCommande;
         
         /// <summary>
         /// Contrôle ListViewArticles.

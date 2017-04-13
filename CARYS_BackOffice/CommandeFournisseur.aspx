@@ -5,8 +5,47 @@
 
 <asp:Content ID="ContentMain" ContentPlaceHolderID="MainContent" runat="server">
     <div class="row">
-        <h1 class="text-center">Gestion commande fournisseur</h1>
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+            <h1 class="text-center">Gestion commande fournisseur</h1>
+        </div>
+        <div class="col-lg-2">
+            <!-- Single button -->
+            <div id="panier" class="btn-group" runat="server">
+                <button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Panier <span class="badge"><%= GridViewCommande.Rows.Count %></span>  <span class="caret"></span>
+                </button>
+                <div id="panierMenu" class="dropdown-menu dropdown-menu-right">
+                    <asp:GridView ID="GridViewCommande" DataKeyNames="Reference" CssClass="table table-responsive" ShowHeaderWhenEmpty="true" GridLines="None" runat="server" AutoGenerateColumns="False" OnRowDeleting="GridViewCommande_RowDeleting" OnRowEditing="GridViewCommande_RowEditing" OnRowUpdating="GridViewCommande_RowUpdating" OnRowCancelingEdit="GridViewCommande_RowCancelingEdit">
+                        <Columns>
+                            <asp:BoundField DataField="Reference" HeaderText="R&#233;f&#233;rence" ReadOnly="true" Visible="false"></asp:BoundField>
+                            <asp:BoundField DataField="LibelleArticle" HeaderText="Libell&#233;" ReadOnly="true"></asp:BoundField>
+                            <asp:TemplateField HeaderText="Quantit&#233;" HeaderStyle-Width="10px">
+                                <ItemTemplate>
+                                    <asp:Label ID="LblQuantiteCommande" Text='<%# Eval("QuantiteCommandeFournisseur") %>' runat="server" />
+                                </ItemTemplate>
+                                <EditItemTemplate>
+                                    <asp:TextBox ID="TxtQuantiteCommande" CssClass="form-control" Text='<%# Bind("QuantiteCommandeFournisseur") %>' runat="server"></asp:TextBox>
+                                </EditItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="Prix" HeaderStyle-Width="100px">
+                                <ItemTemplate>
+                                    <asp:Label ID="LblPrixFournisseurCommande" Text='<%# String.Format("{0:0.00}", Eval("PrixFournisseur")) %>' runat="server" />
+                                    &euro;
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:CommandField ShowEditButton="True"></asp:CommandField>
+                            <asp:CommandField ShowDeleteButton="True"></asp:CommandField>
+                        </Columns>
+                    </asp:GridView>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <hr />
+        <asp:Label ID="LblSuccess" Text="" CssClass="alert alert-success btn-block" Visible="false" runat="server" />
+        <asp:Label ID="LblError" Text="" CssClass="alert alert-danger btn-block" Visible="false" runat="server" />
     </div>
     <div class="row">
         <div class="col-lg-6">
@@ -32,30 +71,6 @@
     </div>
     <br />
     <div class="row">
-        <label for="GridViewCommande">Panier :</label>
-        <asp:GridView ID="GridViewCommande" DataKeyNames="Reference" CssClass="table table-responsive" ShowHeaderWhenEmpty="true" GridLines="None" runat="server" AutoGenerateColumns="False" OnRowDeleting="GridViewCommande_RowDeleting" OnRowEditing="GridViewCommande_RowEditing" OnRowUpdating="GridViewCommande_RowUpdating" OnRowCancelingEdit="GridViewCommande_RowCancelingEdit">
-            <Columns>
-                <asp:BoundField DataField="Reference" HeaderText="R&#233;f&#233;rence" ReadOnly="true"></asp:BoundField>
-                <asp:BoundField DataField="LibelleArticle" HeaderText="Libell&#233;" ReadOnly="true"></asp:BoundField>
-                <asp:TemplateField HeaderText="Quantit&#233;">
-                     <ItemTemplate>
-                        <asp:Label ID="LblQuantiteCommande" Text='<%# Eval("QuantiteCommandeFournisseur") %>' runat="server" />
-                    </ItemTemplate>
-                    <EditItemTemplate>
-                        <asp:TextBox ID="TxtQuantiteCommande" CssClass="form-control" Text='<%# Bind("QuantiteCommandeFournisseur") %>' runat="server"></asp:TextBox>
-                    </EditItemTemplate>
-                </asp:TemplateField>
-                <asp:TemplateField HeaderText="Prix">
-                    <ItemTemplate>
-                        <asp:Label ID="LblPrixFournisseurCommande" Text='<%# Eval("PrixFournisseur") %>' runat="server" /> &euro;
-                    </ItemTemplate>
-                </asp:TemplateField>
-                <asp:CommandField ShowEditButton="True"></asp:CommandField>
-                <asp:CommandField ShowDeleteButton="True"></asp:CommandField>
-            </Columns>
-        </asp:GridView>
-    </div>
-    <div class="row">
         <asp:ListView ID="ListViewArticles" GroupItemCount="3" runat="server" OnLoad="ListViewArticles_Load" OnPagePropertiesChanging="ListViewArticles_PagePropertiesChanging">
             <LayoutTemplate>
                 <div class="row">
@@ -73,7 +88,7 @@
                         </h4>
                         <p>
                             <strong>Prix : </strong>
-                            <asp:Label ID="LblPrix" Text='<%# Eval("PrixFournisseur") %>' runat="server" />
+                            <asp:Label ID="LblPrix" Text='<%# String.Format("{0:0.00}", Eval("PrixFournisseur")) %>' runat="server" />
                             &euro;
                         </p>
                         <p><strong>Quantité en stock : </strong><%# Eval("QuantiteStock") %></p>

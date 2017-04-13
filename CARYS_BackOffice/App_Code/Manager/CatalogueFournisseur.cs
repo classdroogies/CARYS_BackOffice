@@ -50,7 +50,6 @@ namespace CARYS_BackOffice.App_Code.Manager
             }
             catch (Exception)
             {
-
                 throw;
             }
             return liste.ToList();
@@ -82,7 +81,6 @@ namespace CARYS_BackOffice.App_Code.Manager
             }
             catch (Exception)
             {
-
                 throw;
             }
             return liste.ToList();

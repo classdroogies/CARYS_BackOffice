@@ -105,6 +105,8 @@ namespace CARYS_BackOffice
             DropDownListFournisseur.Enabled = false;
             //Activation du bouton annuler
             GroupBtnCommande.Visible = true;
+            // Activation du panier
+            panier.Visible = true;
         }
 
         /// <summary>
@@ -113,6 +115,7 @@ namespace CARYS_BackOffice
         private void EnableFormCommande()
         {
             GroupBtnCommande.Visible = false;
+            panier.Visible = false;
             BtnNouvelleCommande.Visible = true;
             DropDownListFournisseur.Enabled = true;
         }
@@ -164,6 +167,12 @@ namespace CARYS_BackOffice
         /// <param name="e"></param>
         protected void BtnNouvelleCommandeFournisseur_Click(object sender, EventArgs e)
         {
+            // Désactivation du message d'erreur
+            LblError.Text = "";
+            LblError.Visible = false;
+            // Désactivation du message de success
+            LblSuccess.Text = "";
+            LblSuccess.Visible = false;
             // Création de la commande dans la session si elle n'existe pas 
             if (Session["CommandeFournisseur"] == null && DropDownListFournisseur.SelectedIndex != 0)
             {
@@ -175,7 +184,8 @@ namespace CARYS_BackOffice
             }
             else
             {
-                Response.Write("Veuillez choisir un fournisseur.");
+                LblError.Text = "Veuillez choisir un fournisseur.";
+                LblError.Visible = true;
             }
         }
 
@@ -186,6 +196,9 @@ namespace CARYS_BackOffice
         /// <param name="e"></param>
         protected void BtnAnnulerCommande_Click(object sender, EventArgs e)
         {
+            // Désactivation du message d'erreur
+            LblError.Text = "";
+            LblError.Visible = false;
             ClearCommande();
         }
 
@@ -210,6 +223,10 @@ namespace CARYS_BackOffice
         /// <param name="e"></param>
         protected void BtnAddArticle_Click(object sender, EventArgs e)
         {
+            // Désactivation du message d'erreur
+            LblError.Text = "";
+            LblError.Visible = false;
+
             // Récupération de l'item sélectionné
             ListViewItem item = ((LinkButton)sender).NamingContainer as ListViewItem;
             //Récupération des controles
@@ -223,12 +240,14 @@ namespace CARYS_BackOffice
             // Vérification de la référence de l'article
             if (!int.TryParse(((LinkButton)sender).CommandArgument, out reference))
             {
-                Response.Write("Référence article incorrect !");
+                LblError.Text = "Référence article incorrect !";
+                LblError.Visible = true;
             }
             // Vérification de la quantité
             else if (!int.TryParse(txtQuantite.Text, out quantite) && quantite <= 0)
             {
-                Response.Write("Quantité saisie incorrect, la valeur doit être un nombre entier supérieur à 0 !");
+                LblError.Text = "Quantité saisie incorrect, la valeur doit être un nombre entier supérieur à 0 !";
+                LblError.Visible = true;
             }
             else if (Session["CommandeFournisseur"] != null)
             {
@@ -248,9 +267,9 @@ namespace CARYS_BackOffice
                     // Sinon on créé une nouvelle ligne d'article
                     panier.Add(new ArticleCommandeFournisseur(reference, lblLibelle.Text, double.Parse(lblPrix.Text), quantite));
                 }
-                    // On met à jour la grille
-                    GridViewCommande.DataSource = Session["CommandeFournisseur"];
-                    GridViewCommande.DataBind();
+                // On met à jour la grille
+                GridViewCommande.DataSource = Session["CommandeFournisseur"];
+                GridViewCommande.DataBind();
             }
         }
 
@@ -277,15 +296,25 @@ namespace CARYS_BackOffice
         /// <param name="e"></param>
         protected void BtnValiderCommande_Click(object sender, EventArgs e)
         {
+            // Désactivation du message d'erreur
+            LblError.Text = "";
+            LblError.Visible = false;
+
             List<ArticleCommandeFournisseur> panier = ((List<ArticleCommandeFournisseur>)Session["CommandeFournisseur"]);
 
             if (Session["CommandeFournisseur"] != null && panier.Count > 0)
             {
                 if (CommandesFournisseur.SaveCommandeFournisseur(int.Parse(DropDownListFournisseur.SelectedValue), panier))
                 {
-                    Response.Write("La commande à bien à été créée !");
+                    LblSuccess.Text = "La commande à bien à été créée !";
+                    LblSuccess.Visible = true;
                     ClearCommande();
                 }
+            }
+            else
+            {
+                LblError.Text = "Le panier est vide !";
+                LblError.Visible = true;
             }
         }
 
@@ -331,7 +360,8 @@ namespace CARYS_BackOffice
             int quantite = 0;
             if (!int.TryParse(txtQuantite.Text, out quantite) && quantite <= 0)
             {
-                Response.Write("Quantité saisie incorrect, la valeur doit être un nombre entier supérieur à 0 !");
+                LblError.Text = "Quantité saisie incorrect, la valeur doit être un nombre entier supérieur à 0 !";
+                LblError.Visible = true;
             }
             else
             {

@@ -1,0 +1,37 @@
+﻿body {
+    padding-top: 70px;
+}
+
+#logoLink {
+    padding : 1px 0px 0px;
+}
+
+#MainContent_BtnNouvelleCommande, #MainContent_BtnAddArticle, #MainContent_GroupBtnCommande {
+    margin-top: 25px;
+}
+
+#MainContent_panier {
+    margin-top: 15px;
+}
+
+#panierMenu {
+    width: 500px;
+}
+
+.boxArticle {
+    padding: 1%;
+}
+
+.article {
+    border: 1px solid grey;
+    padding: 4%;
+    height: 280px;
+    position: relative;
+}
+
+.commandeArticle {
+    position: absolute;
+    bottom : 0px;
+    left: 0px;
+    padding : 4%;
+}
