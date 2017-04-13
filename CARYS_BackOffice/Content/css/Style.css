@@ -3,7 +3,7 @@
 }
 
 #logoLink {
-    padding : 1px 0px 0px;
+    padding: 1px 0px 0px;
 }
 
 #MainContent_BtnNouvelleCommande, #MainContent_BtnAddArticle, #MainContent_GroupBtnCommande {
@@ -14,24 +14,43 @@
     margin-top: 15px;
 }
 
+#MainContent_GridViewCommande td {
+    vertical-align: middle;
+}
+
 #panierMenu {
-    width: 500px;
+    width: 700px;
 }
 
-.boxArticle {
-    padding: 1%;
+.boxArticle img {
+    position: relative;
+    max-height: 200px !important;
 }
 
-.article {
-    border: 1px solid grey;
-    padding: 4%;
-    height: 280px;
+.articleTitle {
+    height: 60px;
+    display: table;
+    width: 100%;
+}
+
+.articleTitle h3 {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.articlePrix {
+    margin-top: 4px;
+    padding: 8px;
+    float: right;
+    font-size: 1em;
+}
+
+.articleBody {
     position: relative;
 }
 
-.commandeArticle {
+.articleCategorie {
     position: absolute;
-    bottom : 0px;
-    left: 0px;
-    padding : 4%;
+    bottom: 5px;
+    right: 5px;
 }

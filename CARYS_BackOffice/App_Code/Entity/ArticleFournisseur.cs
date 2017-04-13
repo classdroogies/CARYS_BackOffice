@@ -24,5 +24,7 @@ namespace CARYS_BackOffice.App_Code.Entity
         public string LibelleGenre { get; set; }
         // Categorie
         public string LibelleCategorie { get; set; }
+        // Image
+        public string ImageArticle { get; set; }
     }
 }

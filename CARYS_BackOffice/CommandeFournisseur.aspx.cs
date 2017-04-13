@@ -21,6 +21,11 @@ namespace CARYS_BackOffice
                 ListViewArticles.DataBind();
                 CommandeExist();
             }
+
+            if (Session["Fournisseur"] != null)
+            {
+                DropDownListFournisseur.SelectedValue = Session["Fournisseur"].ToString();
+            }
         }
 
         protected void ListViewArticles_Load(object sender, EventArgs e)
@@ -176,7 +181,7 @@ namespace CARYS_BackOffice
             // Création de la commande dans la session si elle n'existe pas 
             if (Session["CommandeFournisseur"] == null && DropDownListFournisseur.SelectedIndex != 0)
             {
-
+                Session.Add("Fournisseur", DropDownListFournisseur.SelectedValue);
                 Session.Add("CommandeFournisseur", new List<ArticleCommandeFournisseur>());
                 GridViewCommande.DataSource = Session["CommandeFournisseur"];
                 GridViewCommande.DataBind();
@@ -209,6 +214,7 @@ namespace CARYS_BackOffice
         {
             if (Session["CommandeFournisseur"] != null)
             {
+                Session.Remove("Fournisseur");
                 Session.Remove("CommandeFournisseur");
                 GridViewCommande.DataSource = null;
                 GridViewCommande.DataBind();
@@ -302,8 +308,10 @@ namespace CARYS_BackOffice
 
             List<ArticleCommandeFournisseur> panier = ((List<ArticleCommandeFournisseur>)Session["CommandeFournisseur"]);
 
+            // Si le panier n'est pas vide
             if (Session["CommandeFournisseur"] != null && panier.Count > 0)
             {
+                // Si la sauvegarde du panier c'est bien passée
                 if (CommandesFournisseur.SaveCommandeFournisseur(int.Parse(DropDownListFournisseur.SelectedValue), panier))
                 {
                     LblSuccess.Text = "La commande à bien à été créée !";
@@ -384,6 +392,7 @@ namespace CARYS_BackOffice
         /// <param name="e"></param>
         protected void GridViewCommande_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
         {
+
             // On met à jour l'index de modification à -1 pour aucune ligne en mode édition dans la grille
             GridViewCommande.EditIndex = -1;
             // On met à jour la grille

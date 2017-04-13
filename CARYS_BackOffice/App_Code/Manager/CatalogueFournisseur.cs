@@ -45,7 +45,8 @@ namespace CARYS_BackOffice.App_Code.Manager
                             SeuilStock = stock.Seuil,
                             QuantiteStock = stock.Quantite,
                             LibelleGenre = genre.LibelleGenre,
-                            LibelleCategorie = categorie.LibelleCategorie
+                            LibelleCategorie = categorie.LibelleCategorie,
+                            ImageArticle = article.PhotoArticle
                         };
             }
             catch (Exception)
@@ -76,7 +77,8 @@ namespace CARYS_BackOffice.App_Code.Manager
                             SeuilStock = stock.Seuil,
                             QuantiteStock = stock.Quantite,
                             LibelleGenre = genre.LibelleGenre,
-                            LibelleCategorie = categorie.LibelleCategorie
+                            LibelleCategorie = categorie.LibelleCategorie,
+                            ImageArticle = article.PhotoArticle
                         };
             }
             catch (Exception)
