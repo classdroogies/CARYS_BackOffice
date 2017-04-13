@@ -11,16 +11,16 @@
         </div>
         <div class="col-lg-2">
             <!-- Single button -->
-            <div id="panier" cssclass="btn-group" runat="server">
+            <div id="panier" class="btn-group" runat="server">
                 <button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Panier <span class="badge"><%= GridViewCommande.Rows.Count %></span>  <span class="caret"></span>
+                    Panier <span class="badge"><%= GridViewCommande.Rows.Count %></span> <span class="caret"></span>
                 </button>
                 <div id="panierMenu" class="dropdown-menu dropdown-menu-right">
                     <asp:GridView ID="GridViewCommande" DataKeyNames="Reference" CssClass="table table-responsive table-striped" ShowHeaderWhenEmpty="true" GridLines="None" runat="server" AutoGenerateColumns="False" OnRowDeleting="GridViewCommande_RowDeleting" OnRowEditing="GridViewCommande_RowEditing" OnRowUpdating="GridViewCommande_RowUpdating" OnRowCancelingEdit="GridViewCommande_RowCancelingEdit">
                         <Columns>
                             <asp:BoundField DataField="Reference" HeaderText="R&#233;f&#233;rence" ReadOnly="true" Visible="false"></asp:BoundField>
                             <asp:BoundField DataField="LibelleArticle" HeaderText="Libell&#233;" ReadOnly="true"></asp:BoundField>
-                            <asp:TemplateField HeaderText="Quantit&#233;" HeaderStyle-Width="10px">
+                            <asp:TemplateField HeaderText="Quantit&#233;" HeaderStyle-Width="100px" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
                                 <ItemTemplate>
                                     <asp:Label ID="LblQuantiteCommande" Text='<%# Eval("QuantiteCommandeFournisseur") %>' runat="server" />
                                 </ItemTemplate>
@@ -28,7 +28,7 @@
                                     <asp:TextBox ID="TxtQuantiteCommande" CssClass="form-control" Text='<%# Bind("QuantiteCommandeFournisseur") %>' runat="server"></asp:TextBox>
                                 </EditItemTemplate>
                             </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Prix" HeaderStyle-Width="100px">
+                            <asp:TemplateField HeaderText="Prix" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
                                 <ItemTemplate>
                                     <asp:Label ID="LblPrixFournisseurCommande" Text='<%# String.Format("{0:0.00}", Eval("PrixFournisseur")) %>' runat="server" />
                                     &euro;
@@ -58,9 +58,12 @@
                                     </asp:LinkButton>
                                 </ItemTemplate>
                             </asp:TemplateField>
-
                         </Columns>
                     </asp:GridView>
+                    <hr />
+                    <h3 id="panierTotal" class="text-center bg-success">TOTAL 
+                        <asp:Label Text="0" ID="LblPanierTotal" runat="server" />
+                        &euro;</h3>
                 </div>
             </div>
         </div>
@@ -113,13 +116,15 @@
                             <span class="articlePrix badge"><asp:Label ID="LblPrix" Text='<%# String.Format("{0:0.00}", Eval("PrixFournisseur")) %>' runat="server" /> &euro;</span>
                         </div>
                         <div class="articleBody panel-body">
+                            <div class="articleReference">
+                               <p class="text-primary">REF : <%# Eval("Reference") %></p>
+                            </div>
                             <div class="articleCategorie">
-
-                                <span class="label label-default"><%# Eval("LibelleCategorie") %></span>
-                                <span class="label label-info"><%# Eval("LibelleGenre") %></span>
+                                <span class="label label-default"><%# Eval("LibelleGenre") %></span>
+                                <span class="label label-info"><%# Eval("LibelleCategorie") %></span>
                             </div>
                             <div class="text-center">
-                                <img class="img-responsive img-thumbnail" src='<%# Eval("ImageArticle") %>' alt='<%# Eval("LibelleArticle") %>' />
+                                <img class="img-responsive img-thumbnail" src='<%# String.IsNullOrEmpty(Eval("ImageArticle").ToString()) ? "http://www.placehold.it/400x600" : Eval("ImageArticle") %>' alt='<%# Eval("LibelleArticle") %>' />
                             </div>
                             <div class="row">
                                 <div class="col-lg-6">

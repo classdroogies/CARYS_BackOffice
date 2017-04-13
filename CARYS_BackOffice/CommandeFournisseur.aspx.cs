@@ -3,6 +3,7 @@ using CARYS_BackOffice.App_Code.Manager;
 using CARYS_BackOffice.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -19,12 +20,30 @@ namespace CARYS_BackOffice
                 // Chargement de la liste de tous les articles fournisseurs
                 ListViewArticles.DataSource = CatalogueFournisseur.GetArticles();
                 ListViewArticles.DataBind();
+                PaginationVisibilite();
                 CommandeExist();
             }
 
             if (Session["Fournisseur"] != null)
             {
                 DropDownListFournisseur.SelectedValue = Session["Fournisseur"].ToString();
+            }
+            VisibilitePanier();
+        }
+
+        /// <summary>
+        /// Gère l'affichage de la pagination en fonction du nombre d'article
+        /// </summary>
+        private void PaginationVisibilite()
+        {
+            // Gestion de l'affichage de la pagination
+            if (((List<ArticleFournisseur>)ListViewArticles.DataSource).Count > 20)
+            {
+                DataPager.Visible = true;
+            }
+            else
+            {
+                DataPager.Visible = false;
             }
         }
 
@@ -163,6 +182,7 @@ namespace CARYS_BackOffice
             // Mise à jour de la grille contenant les articles
             ListViewArticles.DataBind();
             CommandeExist();
+            PaginationVisibilite();
         }
 
         /// <summary>
@@ -276,6 +296,8 @@ namespace CARYS_BackOffice
                 // On met à jour la grille
                 GridViewCommande.DataSource = Session["CommandeFournisseur"];
                 GridViewCommande.DataBind();
+                // On modifie le total
+                LblPanierTotal.Text = String.Format("{0:0.00}", TotalPanier(panier).ToString());
             }
         }
 
@@ -338,6 +360,9 @@ namespace CARYS_BackOffice
                 ((List<ArticleCommandeFournisseur>)Session["CommandeFournisseur"]).RemoveAt(e.RowIndex);
                 GridViewCommande.DataSource = Session["CommandeFournisseur"];
                 GridViewCommande.DataBind();
+                Session["VisibilitePanier"] = true;
+                // On modifie le total
+                LblPanierTotal.Text = String.Format("{0:0.00}", TotalPanier(((List<ArticleCommandeFournisseur>)Session["CommandeFournisseur"])).ToString());
             }
         }
 
@@ -353,6 +378,9 @@ namespace CARYS_BackOffice
             // On met à jour la grille
             GridViewCommande.DataSource = Session["CommandeFournisseur"];
             GridViewCommande.DataBind();
+            // On modifie le total
+            LblPanierTotal.Text = String.Format("{0:0.00}", TotalPanier(((List<ArticleCommandeFournisseur>)Session["CommandeFournisseur"])).ToString());
+            Session["VisibilitePanier"] = true;
         }
 
         /// <summary>
@@ -379,10 +407,13 @@ namespace CARYS_BackOffice
                 ArticleCommandeFournisseur article = panier.Find(x => x.Reference == (int)e.Keys["Reference"]);
                 // On modifie la quantité 
                 article.QuantiteCommandeFournisseur = quantite;
+                // On modifie le total
+                LblPanierTotal.Text = String.Format("{0:0.00}",TotalPanier(panier).ToString());
             }
             GridViewCommande.EditIndex = -1;
             GridViewCommande.DataSource = Session["CommandeFournisseur"];
             GridViewCommande.DataBind();
+            Session["VisibilitePanier"] = true;
         }
 
         /// <summary>
@@ -398,6 +429,41 @@ namespace CARYS_BackOffice
             // On met à jour la grille
             GridViewCommande.DataSource = Session["CommandeFournisseur"];
             GridViewCommande.DataBind();
+            Session["VisibilitePanier"] = true;
+        }
+
+        /// <summary>
+        /// Calcul le cout total de la commande
+        /// </summary>
+        /// <param name="panier">le panier de la commande a calculer</param>
+        /// <returns>le total de la commande</returns>
+        private double TotalPanier(List<ArticleCommandeFournisseur> panier)
+        {
+            double total = 0;
+
+            foreach (ArticleCommandeFournisseur item in panier)
+            {
+                total += item.PrixFournisseur * item.QuantiteCommandeFournisseur;
+            }
+            return total;
+        }
+
+        /// <summary>
+        /// Gestion de l'affichage du panier au rechargement de la page
+        /// </summary>
+        private void VisibilitePanier()
+        {
+            if ((bool)Session["VisibilitePanier"])
+            {
+                // Si le panier était visible avant le rafraichissement
+                // on ajout la class css open pour afficher le panier
+                panier.Attributes["class"] = "btn-group open";
+                Session["VisibilitePanier"] = false;
+            }
+            else
+            {
+                panier.Attributes["class"] = "btn-group";
+            }
         }
     }
 }

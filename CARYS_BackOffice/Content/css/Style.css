@@ -22,6 +22,10 @@
     width: 700px;
 }
 
+#panierTotal {
+    padding : 2%;
+}
+
 .boxArticle img {
     position: relative;
     max-height: 200px !important;
@@ -49,8 +53,15 @@
     position: relative;
 }
 
+.articleReference {
+    position: absolute;
+    bottom: -8px;
+    left: 5px;
+}
+
 .articleCategorie {
     position: absolute;
     bottom: 5px;
     right: 5px;
 }
+
