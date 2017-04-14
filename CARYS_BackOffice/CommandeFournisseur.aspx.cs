@@ -297,7 +297,7 @@ namespace CARYS_BackOffice
                 GridViewCommande.DataSource = Session["CommandeFournisseur"];
                 GridViewCommande.DataBind();
                 // On modifie le total
-                LblPanierTotal.Text = String.Format("{0:0.00}", TotalPanier(panier).ToString());
+                LblPanierTotal.Text = String.Format("{0:0.00}", TotalPanier(panier));
             }
         }
 
@@ -362,7 +362,7 @@ namespace CARYS_BackOffice
                 GridViewCommande.DataBind();
                 Session["VisibilitePanier"] = true;
                 // On modifie le total
-                LblPanierTotal.Text = String.Format("{0:0.00}", TotalPanier(((List<ArticleCommandeFournisseur>)Session["CommandeFournisseur"])).ToString());
+                LblPanierTotal.Text = String.Format("{0:0.00}", TotalPanier(((List<ArticleCommandeFournisseur>)Session["CommandeFournisseur"])));
             }
         }
 
@@ -379,7 +379,7 @@ namespace CARYS_BackOffice
             GridViewCommande.DataSource = Session["CommandeFournisseur"];
             GridViewCommande.DataBind();
             // On modifie le total
-            LblPanierTotal.Text = String.Format("{0:0.00}", TotalPanier(((List<ArticleCommandeFournisseur>)Session["CommandeFournisseur"])).ToString());
+            LblPanierTotal.Text = String.Format("{0:0.00}", TotalPanier(((List<ArticleCommandeFournisseur>)Session["CommandeFournisseur"])));
             Session["VisibilitePanier"] = true;
         }
 
@@ -408,7 +408,7 @@ namespace CARYS_BackOffice
                 // On modifie la quantité 
                 article.QuantiteCommandeFournisseur = quantite;
                 // On modifie le total
-                LblPanierTotal.Text = String.Format("{0:0.00}",TotalPanier(panier).ToString());
+                LblPanierTotal.Text = String.Format("{0:0.00}", TotalPanier(panier));
             }
             GridViewCommande.EditIndex = -1;
             GridViewCommande.DataSource = Session["CommandeFournisseur"];
